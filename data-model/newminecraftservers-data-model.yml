@@ -1,0 +1,84 @@
+generated: '2026-09-21'
+method: derived
+generator: derive-data-model.py
+source:
+- openapi/newminecraftservers-openapi.yml
+notation: has_one = property $ref; has_many = array of $ref; belongs_to = <entity>_id field
+summary:
+  entities: 14
+  entities_in_spec: 14
+  relationships: 11
+entities:
+- name: ErrorEnvelope
+  fields: 1
+- name: MinecraftStatus
+  fields: 8
+- name: MinecraftStatusEnvelope
+  fields: 1
+- name: ServerConnection
+  fields: 7
+- name: ServerDetail
+  fields: 0
+- name: ServerDetailEnvelope
+  fields: 1
+- name: ServerHistory
+  fields: 9
+- name: ServerHistoryEnvelope
+  fields: 1
+- name: ServerList
+  fields: 9
+- name: ServerListEnvelope
+  fields: 1
+- name: ServerSnapshot
+  fields: 8
+- name: ServerSummary
+  fields: 14
+- name: StatusCheck
+  fields: 13
+- name: StatusIncident
+  fields: 5
+relationships:
+- from: ServerListEnvelope
+  to: ServerList
+  type: has_one
+  via: data
+- from: ServerDetailEnvelope
+  to: ServerDetail
+  type: has_one
+  via: data
+- from: ServerHistoryEnvelope
+  to: ServerHistory
+  type: has_one
+  via: data
+- from: MinecraftStatusEnvelope
+  to: MinecraftStatus
+  type: has_one
+  via: data
+- from: ServerList
+  to: ServerSummary
+  type: has_many
+  via: items
+- from: ServerSummary
+  to: ServerConnection
+  type: has_one
+  via: primaryConnection
+- from: ServerSummary
+  to: ServerSnapshot
+  type: has_one
+  via: primarySnapshot
+- from: ServerDetail
+  to: ServerConnection
+  type: has_many
+  via: connections
+- from: MinecraftStatus
+  to: StatusCheck
+  type: has_many
+  via: checks
+- from: MinecraftStatus
+  to: StatusIncident
+  type: has_many
+  via: incidents
+- from: MinecraftStatus
+  to: StatusIncident
+  type: has_many
+  via: pastIncidents

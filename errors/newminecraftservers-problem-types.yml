@@ -1,0 +1,41 @@
+generated: '2026-09-21'
+method: derived
+generator: derive-problem-types.py
+source:
+- openapi/newminecraftservers-openapi.yml
+format: custom
+envelope:
+  media_type: application/json
+  schema: ErrorEnvelope
+coverage:
+  operations: 5
+  statuses_declared: 4
+problems:
+- status: 400
+  title: Bad Request
+  description: Invalid, unknown, or duplicate input.
+  operations: 4
+  media_types:
+  - application/json
+  schema: ErrorEnvelope
+- status: 404
+  title: Not Found
+  description: No published listing matched.
+  operations: 3
+  media_types:
+  - application/json
+  schema: ErrorEnvelope
+- status: 429
+  title: Too Many Requests
+  description: The per-process client request limit was reached. Retry-After is 60 seconds.
+  operations: 5
+  media_types:
+  - application/json
+  schema: ErrorEnvelope
+- status: 500
+  title: Internal Server Error
+  description: A safe error without internal database details.
+  operations: 5
+  media_types:
+  - application/json
+  schema: ErrorEnvelope

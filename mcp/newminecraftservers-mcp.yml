@@ -1,0 +1,28 @@
+generated: 2026-09-21
+method: derived
+source: https://newminecraftservers.net/openapi.json
+status: candidate
+deployment:
+  mode: none
+  auth: none
+  verified: derived
+note: >-
+  No official MCP server is published. /.well-known/oauth-protected-resource and
+  /mcp both 404. The tools below are a candidate mapping derived from the five
+  read-only OpenAPI operations; nobody ships a server for this API today.
+tools:
+- name: list_servers
+  description: Search and list published Minecraft servers with their latest check.
+  operation: listServers
+- name: lookup_server_by_address
+  description: Resolve a server listing by its IP/host address.
+  operation: lookupServerByAddress
+- name: get_server_by_slug
+  description: Get one server listing by slug.
+  operation: getServerBySlug
+- name: get_public_server_history
+  description: Read a server's public player-count history.
+  operation: getPublicServerHistory
+- name: get_minecraft_service_status
+  description: Read cached Minecraft service (login/Realms/session) status.
+  operation: getMinecraftServiceStatus

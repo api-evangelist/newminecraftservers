@@ -1,0 +1,51 @@
+generated: 2026-09-21
+method: searched
+source:
+- https://newminecraftservers.net/minecraft-api
+- https://newminecraftservers.net/openapi.json
+idempotency:
+  coverage: na
+  mechanism: null
+  header: null
+  retention: null
+  docs: null
+  note: >-
+    All five operations are read-only GETs, so there is no mutating surface for
+    idempotency to protect. na is the correct measurement, not a gap.
+reversibility:
+  coverage: na
+  note: Read-only API; there are no write actions to reverse.
+pagination:
+  style: page-number
+  params:
+  - page
+  - limit
+  response_fields:
+  - page
+  - pageSize
+  - total
+  - totalPages
+  note: >-
+    List responses (GET /servers) carry page, total and totalPages; page until
+    page reaches totalPages. limit is 1-25 (default documented in the spec).
+versioning:
+  style: uri-path
+  current: v1
+  detail: All endpoints live under https://newminecraftservers.net/api/v1.
+error_envelope:
+  shape: >-
+    Failures return an { error: { code, message } } object with a stable string
+    code and a human-readable message; successes wrap the payload in { data: ... }.
+  codes_seen:
+  - invalid_request
+  note: Custom envelope, not RFC 9457 problem+json.
+authentication:
+  scheme: none
+  detail: No key, no sign-up, CORS enabled. Public read-only access over HTTPS.
+metadata:
+  dates: ISO 8601 strings in UTC.
+rate_limit_signaling:
+  detail: >-
+    A per-process client request limit returns HTTP 429 with a Retry-After header
+    (documented example 60 seconds). No RateLimit-* headers and no published
+    numeric quota.

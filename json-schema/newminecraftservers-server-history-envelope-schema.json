@@ -1,0 +1,180 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/newminecraftservers/main/json-schema/newminecraftservers-server-history-envelope-schema.json",
+  "title": "ServerHistoryEnvelope",
+  "x-generated": "2026-09-21",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/newminecraftservers-openapi.yml#/components/schemas/ServerHistoryEnvelope",
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/ServerHistory"
+    }
+  },
+  "$defs": {
+    "ServerHistory": {
+      "type": "object",
+      "required": [
+        "range",
+        "from",
+        "events",
+        "resolution",
+        "points",
+        "summary",
+        "versions",
+        "motdChanges"
+      ],
+      "properties": {
+        "range": {
+          "type": "string",
+          "enum": [
+            "24h",
+            "7d",
+            "30d"
+          ]
+        },
+        "from": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "resolution": {
+          "type": "string",
+          "enum": [
+            "sample",
+            "hour",
+            "day"
+          ]
+        },
+        "points": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "t"
+            ],
+            "properties": {
+              "t": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "players": {
+                "type": "number"
+              },
+              "peak": {
+                "type": "integer"
+              },
+              "low": {
+                "type": "integer"
+              },
+              "uptime": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1
+              }
+            }
+          }
+        },
+        "events": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "t",
+              "kind"
+            ],
+            "properties": {
+              "t": {
+                "type": "string",
+                "format": "date-time"
+              },
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "version",
+                  "motd",
+                  "icon",
+                  "outage",
+                  "slots"
+                ]
+              }
+            }
+          }
+        },
+        "summary": {
+          "type": "object",
+          "required": [
+            "checks",
+            "daysCovered"
+          ],
+          "properties": {
+            "checks": {
+              "type": "integer"
+            },
+            "daysCovered": {
+              "type": "integer"
+            },
+            "peak": {
+              "type": "object",
+              "required": [
+                "players",
+                "at"
+              ],
+              "properties": {
+                "players": {
+                  "type": "integer"
+                },
+                "at": {
+                  "type": "string",
+                  "format": "date-time"
+                }
+              }
+            },
+            "averagePlayers": {
+              "type": "number"
+            },
+            "uptimeRatio": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 1
+            },
+            "busiestHourUtc": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 23
+            }
+          }
+        },
+        "versions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": [
+              "versionName",
+              "since"
+            ],
+            "properties": {
+              "versionName": {
+                "type": "string"
+              },
+              "since": {
+                "type": "string",
+                "format": "date-time"
+              }
+            }
+          }
+        },
+        "motdChanges": {
+          "type": "integer"
+        },
+        "firstCheckAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

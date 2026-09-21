@@ -1,0 +1,103 @@
+name: NewMinecraftServers
+aid: newminecraftservers
+url: https://raw.githubusercontent.com/api-evangelist/newminecraftservers/refs/heads/main/apis.yml
+image: https://newminecraftservers.net/og/index.png?v=1.82871
+description: NewMinecraftServers is a directory of new Minecraft servers for Java
+  and Bedrock Edition, where every listing is checked automatically and shows the
+  server IP, online state, players online, accepted versions and gamemodes. Alongside
+  the public site it publishes a free, no-key read-only Public API (OpenAPI 3.0) for
+  searching listed servers, looking one up by address, reading player-count history
+  and reading cached Minecraft service status as JSON, plus a set of free browser
+  tools and an open-source Paper companion plugin for server owners.
+created: '2026-09-21'
+modified: '2026-09-21'
+tags:
+- minecraft
+- gaming
+- server-directory
+- game-servers
+- status-monitoring
+- public-api
+- read-only
+- json
+common:
+- type: AgenticAccess
+  url: agentic-access/newminecraftservers-agentic-access.yml
+- type: Plans
+  url: plans/newminecraftservers-plans-pricing.yml
+- type: Spectral
+  url: rules/newminecraftservers-rules.yml
+- type: JSONLD
+  url: json-ld/newminecraftservers-context.jsonld
+- type: Vocabulary
+  url: vocabulary/newminecraftservers-vocabulary.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DataModel
+  url: data-model/newminecraftservers-data-model.yml
+- type: Conventions
+  url: conventions/newminecraftservers-conventions.yml
+- type: DomainSecurity
+  url: security/newminecraftservers-domain-security.yml
+- type: Deprecation
+  url: lifecycle/newminecraftservers-lifecycle.yml
+- type: Lifecycle
+  url: lifecycle/newminecraftservers-lifecycle.yml
+- type: ErrorCatalog
+  url: errors/newminecraftservers-problem-types.yml
+- type: Conformance
+  url: conformance/newminecraftservers-conformance.yml
+- type: LLMsTxt
+  url: llms/newminecraftservers-llms.txt
+- type: SDKs
+  url: packages/newminecraftservers-packages.yml
+- type: Packages
+  url: packages/newminecraftservers-packages.yml
+- type: Login
+  url: https://newminecraftservers.net/login
+- type: Website
+  url: https://newminecraftservers.net
+- type: PrivacyPolicy
+  url: https://newminecraftservers.net/privacy
+- type: TermsOfService
+  url: https://newminecraftservers.net/terms
+- type: Blog
+  url: https://newminecraftservers.net/posts
+- type: GitHubOrganization
+  url: https://github.com/aarongainz
+maintainers:
+- FN: NewMinecraftServers
+  url: https://newminecraftservers.net
+apis:
+- name: NewMinecraftServers API
+  description: 'Free, no-key read-only API for discovering published Minecraft servers
+    and reading cached Minecraft service status. Five GET endpoints under /api/v1:
+    server search/list, address lookup, server detail, public player-count history,
+    and Minecraft service status. JSON over HTTPS with CORS enabled.'
+  humanURL: https://newminecraftservers.net/minecraft-api
+  baseURL: https://newminecraftservers.net/api/v1
+  properties:
+  - type: OpenAPI
+    url: openapi/newminecraftservers-openapi.yml
+  - type: OpenAPI
+    name: OpenAPI (provider-hosted)
+    url: https://newminecraftservers.net/openapi.json
+  - type: Documentation
+    url: https://newminecraftservers.net/minecraft-api
+  - type: APIReference
+    url: https://newminecraftservers.net/minecraft-api
+  - type: JSONSchema
+    url: json-schema/newminecraftservers-minecraft-status-envelope-schema.json
+  - type: JSONSchema
+    url: json-schema/newminecraftservers-server-history-envelope-schema.json
+  - type: JSONSchema
+    url: json-schema/newminecraftservers-server-detail-envelope-schema.json
+  - type: JSONSchema
+    url: json-schema/newminecraftservers-server-list-envelope-schema.json
+  aid: newminecraftservers:newminecraftservers-api
+  image: https://newminecraftservers.net/og/index.png?v=1.82871
+x-enrichment:
+  date: '2026-09-21'
+  status: enriched
+  artifacts_added: 25
+  pass: local-v5

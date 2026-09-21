@@ -1,0 +1,23 @@
+generated: 2026-09-21
+method: searched
+source: https://newminecraftservers.net/plugin
+note: >-
+  The only first-party client library is the NewMinecraftServers Companion, an
+  open-source Paper server plugin (Java, MIT) linked from the provider's own
+  /plugin page and hosted on GitHub. It is distributed as a downloadable jar and
+  from source; the repository publishes no tagged release or registry artifact, so
+  version is null (last source push 2026-09-18). There are no npm, PyPI, Maven
+  Central, NuGet, RubyGems, crates.io or Packagist packages for the public read API,
+  which is a plain no-key HTTPS/JSON surface with CORS enabled.
+packages:
+- name: newminecraftservers-companion
+  registry: github
+  url: https://github.com/aarongainz/newminecraftservers-companion
+  language: Java
+  official: true
+  version: null
+  published: null
+  note: >-
+    Open-source Paper plugin (MIT). Claims a server listing and surfaces player
+    counts, uptime and busiest hours in game. No tagged release; distributed as a
+    jar and source. Last repository push 2026-09-18.

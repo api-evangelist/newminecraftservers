@@ -1,0 +1,292 @@
+{
+  "@context": {
+    "@vocab": "https://newminecraftservers.net/schema#",
+    "schema": "https://schema.org/",
+    "xsd": "http://www.w3.org/2001/XMLSchema#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "newminecraftservers": "https://newminecraftservers.net/schema#",
+    "ErrorEnvelope": "newminecraftservers:ErrorEnvelope",
+    "error": {
+      "@id": "newminecraftservers:error"
+    },
+    "ServerListEnvelope": "newminecraftservers:ServerListEnvelope",
+    "data": {
+      "@id": "newminecraftservers:data",
+      "@type": "@id"
+    },
+    "ServerDetailEnvelope": "newminecraftservers:ServerDetailEnvelope",
+    "ServerHistoryEnvelope": "newminecraftservers:ServerHistoryEnvelope",
+    "MinecraftStatusEnvelope": "newminecraftservers:MinecraftStatusEnvelope",
+    "ServerList": "newminecraftservers:ServerList",
+    "items": {
+      "@id": "newminecraftservers:items",
+      "@container": "@list"
+    },
+    "page": {
+      "@id": "newminecraftservers:page",
+      "@type": "xsd:integer"
+    },
+    "pageSize": {
+      "@id": "newminecraftservers:pageSize",
+      "@type": "xsd:integer"
+    },
+    "total": {
+      "@id": "newminecraftservers:total",
+      "@type": "xsd:integer"
+    },
+    "totalPages": {
+      "@id": "newminecraftservers:totalPages",
+      "@type": "xsd:integer"
+    },
+    "sort": {
+      "@id": "newminecraftservers:sort",
+      "@type": "xsd:string"
+    },
+    "votingOpen": {
+      "@id": "newminecraftservers:votingOpen",
+      "@type": "xsd:boolean"
+    },
+    "hiddenOffline": {
+      "@id": "newminecraftservers:hiddenOffline",
+      "@type": "xsd:integer"
+    },
+    "scope": {
+      "@id": "newminecraftservers:scope"
+    },
+    "ServerSummary": "newminecraftservers:ServerSummary",
+    "id": {
+      "@id": "newminecraftservers:id",
+      "@type": "xsd:string"
+    },
+    "slug": {
+      "@id": "newminecraftservers:slug",
+      "@type": "xsd:string"
+    },
+    "name": {
+      "@id": "newminecraftservers:name",
+      "@type": "xsd:string"
+    },
+    "shortDescription": {
+      "@id": "newminecraftservers:shortDescription",
+      "@type": "xsd:string"
+    },
+    "country": {
+      "@id": "newminecraftservers:country",
+      "@type": "xsd:string"
+    },
+    "classification": {
+      "@id": "newminecraftservers:classification"
+    },
+    "media": {
+      "@id": "newminecraftservers:media"
+    },
+    "primaryConnection": {
+      "@id": "newminecraftservers:primaryConnection",
+      "@type": "@id"
+    },
+    "displayAddress": {
+      "@id": "newminecraftservers:displayAddress"
+    },
+    "primarySnapshot": {
+      "@id": "newminecraftservers:primarySnapshot",
+      "@type": "@id"
+    },
+    "availableEditions": {
+      "@id": "newminecraftservers:availableEditions",
+      "@container": "@list"
+    },
+    "publishedAt": {
+      "@id": "newminecraftservers:publishedAt",
+      "@type": "xsd:dateTime"
+    },
+    "votes": {
+      "@id": "newminecraftservers:votes"
+    },
+    "award": {
+      "@id": "newminecraftservers:award"
+    },
+    "ServerConnection": "newminecraftservers:ServerConnection",
+    "edition": {
+      "@id": "newminecraftservers:edition",
+      "@type": "xsd:string"
+    },
+    "host": {
+      "@id": "newminecraftservers:host",
+      "@type": "xsd:string"
+    },
+    "port": {
+      "@id": "newminecraftservers:port",
+      "@type": "xsd:integer"
+    },
+    "role": {
+      "@id": "newminecraftservers:role",
+      "@type": "xsd:string"
+    },
+    "populationRelationship": {
+      "@id": "newminecraftservers:populationRelationship",
+      "@type": "xsd:string"
+    },
+    "latest": {
+      "@id": "newminecraftservers:latest"
+    },
+    "ServerSnapshot": "newminecraftservers:ServerSnapshot",
+    "connectionId": {
+      "@id": "newminecraftservers:connectionId",
+      "@type": "xsd:string"
+    },
+    "outcome": {
+      "@id": "newminecraftservers:outcome",
+      "@type": "xsd:string"
+    },
+    "observedAt": {
+      "@id": "newminecraftservers:observedAt",
+      "@type": "xsd:dateTime"
+    },
+    "playersOnline": {
+      "@id": "newminecraftservers:playersOnline",
+      "@type": "xsd:integer"
+    },
+    "playersMax": {
+      "@id": "newminecraftservers:playersMax",
+      "@type": "xsd:integer"
+    },
+    "protocol": {
+      "@id": "newminecraftservers:protocol",
+      "@type": "xsd:integer"
+    },
+    "versionName": {
+      "@id": "newminecraftservers:versionName",
+      "@type": "xsd:string"
+    },
+    "ServerHistory": "newminecraftservers:ServerHistory",
+    "range": {
+      "@id": "newminecraftservers:range",
+      "@type": "xsd:string"
+    },
+    "from": {
+      "@id": "newminecraftservers:from",
+      "@type": "xsd:dateTime"
+    },
+    "resolution": {
+      "@id": "newminecraftservers:resolution",
+      "@type": "xsd:string"
+    },
+    "points": {
+      "@id": "newminecraftservers:points",
+      "@container": "@list"
+    },
+    "events": {
+      "@id": "newminecraftservers:events",
+      "@container": "@list"
+    },
+    "summary": {
+      "@id": "newminecraftservers:summary"
+    },
+    "versions": {
+      "@id": "newminecraftservers:versions",
+      "@container": "@list"
+    },
+    "motdChanges": {
+      "@id": "newminecraftservers:motdChanges",
+      "@type": "xsd:integer"
+    },
+    "firstCheckAt": {
+      "@id": "newminecraftservers:firstCheckAt",
+      "@type": "xsd:dateTime"
+    },
+    "MinecraftStatus": "newminecraftservers:MinecraftStatus",
+    "overall": {
+      "@id": "newminecraftservers:overall",
+      "@type": "@id"
+    },
+    "checkedAt": {
+      "@id": "newminecraftservers:checkedAt",
+      "@type": "xsd:dateTime"
+    },
+    "monitoringSince": {
+      "@id": "newminecraftservers:monitoringSince",
+      "@type": "xsd:dateTime"
+    },
+    "intervalSeconds": {
+      "@id": "newminecraftservers:intervalSeconds",
+      "@type": "xsd:integer"
+    },
+    "checks": {
+      "@id": "newminecraftservers:checks",
+      "@container": "@list"
+    },
+    "xbox": {
+      "@id": "newminecraftservers:xbox"
+    },
+    "incidents": {
+      "@id": "newminecraftservers:incidents",
+      "@container": "@list"
+    },
+    "pastIncidents": {
+      "@id": "newminecraftservers:pastIncidents",
+      "@container": "@list"
+    },
+    "CheckState": "newminecraftservers:CheckState",
+    "StatusCheck": "newminecraftservers:StatusCheck",
+    "label": {
+      "@id": "newminecraftservers:label",
+      "@type": "xsd:string"
+    },
+    "description": {
+      "@id": "newminecraftservers:description",
+      "@type": "xsd:string"
+    },
+    "group": {
+      "@id": "newminecraftservers:group",
+      "@type": "xsd:string"
+    },
+    "state": {
+      "@id": "newminecraftservers:state",
+      "@type": "@id"
+    },
+    "latencyMs": {
+      "@id": "newminecraftservers:latencyMs",
+      "@type": "xsd:decimal"
+    },
+    "detail": {
+      "@id": "newminecraftservers:detail",
+      "@type": "xsd:string"
+    },
+    "uptime24h": {
+      "@id": "newminecraftservers:uptime24h",
+      "@type": "xsd:decimal"
+    },
+    "uptime30d": {
+      "@id": "newminecraftservers:uptime30d",
+      "@type": "xsd:decimal"
+    },
+    "uptime90d": {
+      "@id": "newminecraftservers:uptime90d",
+      "@type": "xsd:decimal"
+    },
+    "timeline": {
+      "@id": "newminecraftservers:timeline",
+      "@container": "@list"
+    },
+    "StatusIncident": "newminecraftservers:StatusIncident",
+    "checkId": {
+      "@id": "newminecraftservers:checkId",
+      "@type": "xsd:string"
+    },
+    "startedAt": {
+      "@id": "newminecraftservers:startedAt",
+      "@type": "xsd:dateTime"
+    },
+    "endedAt": {
+      "@id": "newminecraftservers:endedAt",
+      "@type": "xsd:dateTime"
+    }
+  },
+  "@type": "schema:Dataset",
+  "schema:name": "NewMinecraftServers API JSON-LD context",
+  "schema:description": "A JSON-LD @context for the objects NewMinecraftServers's own API contract declares: one class per component schema, one property per declared field, typed from the contract. Derived by script (derive-json-ld.py, 2026-09-21) from openapi/newminecraftservers-openapi.yml.",
+  "dcterms:created": "2026-09-21",
+  "dcterms:source": [
+    "openapi/newminecraftservers-openapi.yml"
+  ]
+}

@@ -1,0 +1,16 @@
+generated: 2026-09-21
+method: searched
+source: https://newminecraftservers.net/minecraft-api
+name: NewMinecraftServers Public API
+limit_count: 0
+note: >-
+  The docs state verbatim: "There is no published per-client quota today, and no
+  uptime guarantee." The OpenAPI documents a 429 TooManyRequests response for a
+  "per-process client request limit" that returns a Retry-After header (example 60
+  seconds), but no numeric request rate is published. No RateLimit-* response
+  headers are exposed on live responses. Recorded as an honest zero.
+limits: []
+response:
+  status_on_exhaustion: 429
+  headers:
+  - Retry-After

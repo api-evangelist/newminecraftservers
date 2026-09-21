@@ -1,0 +1,418 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/newminecraftservers/main/json-schema/newminecraftservers-server-list-envelope-schema.json",
+  "title": "ServerListEnvelope",
+  "x-generated": "2026-09-21",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/newminecraftservers-openapi.yml#/components/schemas/ServerListEnvelope",
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/ServerList"
+    }
+  },
+  "$defs": {
+    "MotdLines": {
+      "type": "array",
+      "items": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "required": [
+            "text"
+          ],
+          "properties": {
+            "text": {
+              "type": "string"
+            },
+            "color": {
+              "type": "string",
+              "pattern": "^#[0-9a-fA-F]{6}$"
+            },
+            "bold": {
+              "type": "boolean"
+            },
+            "italic": {
+              "type": "boolean"
+            },
+            "underline": {
+              "type": "boolean"
+            },
+            "strike": {
+              "type": "boolean"
+            }
+          }
+        }
+      }
+    },
+    "ServerConnection": {
+      "type": "object",
+      "required": [
+        "id",
+        "edition",
+        "host",
+        "port",
+        "role",
+        "populationRelationship"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "edition": {
+          "type": "string",
+          "enum": [
+            "java",
+            "bedrock",
+            "unknown"
+          ]
+        },
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "integer"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "primary",
+            "alternate"
+          ]
+        },
+        "populationRelationship": {
+          "type": "string",
+          "enum": [
+            "shared",
+            "separate",
+            "unknown"
+          ]
+        },
+        "latest": {
+          "type": "object",
+          "required": [
+            "outcome",
+            "observedAt"
+          ],
+          "properties": {
+            "outcome": {
+              "type": "string",
+              "enum": [
+                "online",
+                "offline",
+                "unknown"
+              ]
+            },
+            "observedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "playersOnline": {
+              "type": "integer"
+            },
+            "playersMax": {
+              "type": "integer"
+            },
+            "latencyMs": {
+              "type": "number"
+            },
+            "protocol": {
+              "type": "integer"
+            },
+            "versionName": {
+              "type": "string"
+            },
+            "motdPlain": {
+              "type": "string"
+            },
+            "motdLines": {
+              "$ref": "#/$defs/MotdLines"
+            }
+          }
+        }
+      }
+    },
+    "ServerList": {
+      "type": "object",
+      "required": [
+        "items",
+        "page",
+        "pageSize",
+        "total",
+        "totalPages",
+        "sort",
+        "scope"
+      ],
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ServerSummary"
+          }
+        },
+        "page": {
+          "type": "integer"
+        },
+        "pageSize": {
+          "type": "integer"
+        },
+        "total": {
+          "type": "integer"
+        },
+        "totalPages": {
+          "type": "integer"
+        },
+        "sort": {
+          "type": "string",
+          "enum": [
+            "newest",
+            "ranked",
+            "relevance",
+            "random",
+            "votes"
+          ]
+        },
+        "votingOpen": {
+          "type": "boolean"
+        },
+        "hiddenOffline": {
+          "type": "integer"
+        },
+        "scope": {
+          "type": "object",
+          "required": [
+            "total",
+            "online",
+            "playersOnline",
+            "bedrock"
+          ],
+          "properties": {
+            "total": {
+              "type": "integer"
+            },
+            "online": {
+              "type": "integer"
+            },
+            "playersOnline": {
+              "type": "integer"
+            },
+            "bedrock": {
+              "type": "integer"
+            }
+          }
+        }
+      }
+    },
+    "ServerSnapshot": {
+      "type": "object",
+      "required": [
+        "connectionId",
+        "edition",
+        "outcome",
+        "observedAt"
+      ],
+      "properties": {
+        "connectionId": {
+          "type": "string"
+        },
+        "edition": {
+          "type": "string",
+          "enum": [
+            "java",
+            "bedrock",
+            "unknown"
+          ]
+        },
+        "outcome": {
+          "type": "string",
+          "enum": [
+            "online",
+            "offline",
+            "unknown"
+          ]
+        },
+        "observedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "playersOnline": {
+          "type": "integer"
+        },
+        "playersMax": {
+          "type": "integer"
+        },
+        "protocol": {
+          "type": "integer"
+        },
+        "versionName": {
+          "type": "string"
+        }
+      }
+    },
+    "ServerSummary": {
+      "type": "object",
+      "required": [
+        "id",
+        "slug",
+        "name",
+        "classification",
+        "media",
+        "primaryConnection",
+        "primarySnapshot",
+        "availableEditions",
+        "publishedAt"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "slug": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "shortDescription": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "classification": {
+          "type": "object",
+          "required": [
+            "genreIds",
+            "tags"
+          ],
+          "properties": {
+            "genreIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "primaryGenreIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "gameMode": {
+              "type": "string"
+            },
+            "cracked": {
+              "type": "boolean"
+            },
+            "crossplay": {
+              "type": "boolean"
+            }
+          }
+        },
+        "media": {
+          "type": "object",
+          "properties": {
+            "bannerUrl": {
+              "type": "string"
+            },
+            "iconUrl": {
+              "type": "string"
+            },
+            "motdImageUrl": {
+              "type": "string"
+            },
+            "motdLines": {
+              "$ref": "#/$defs/MotdLines"
+            }
+          }
+        },
+        "primaryConnection": {
+          "$ref": "#/$defs/ServerConnection"
+        },
+        "displayAddress": {
+          "type": "object",
+          "required": [
+            "host",
+            "port"
+          ],
+          "properties": {
+            "host": {
+              "type": "string"
+            },
+            "port": {
+              "type": "integer"
+            }
+          }
+        },
+        "primarySnapshot": {
+          "$ref": "#/$defs/ServerSnapshot"
+        },
+        "availableEditions": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "java",
+              "bedrock"
+            ]
+          }
+        },
+        "publishedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "votes": {
+          "type": "object",
+          "required": [
+            "month",
+            "total"
+          ],
+          "properties": {
+            "month": {
+              "type": "integer"
+            },
+            "total": {
+              "type": "integer"
+            }
+          }
+        },
+        "award": {
+          "type": "object",
+          "required": [
+            "kind",
+            "position"
+          ],
+          "properties": {
+            "kind": {
+              "type": "string",
+              "enum": [
+                "players",
+                "votes"
+              ]
+            },
+            "position": {
+              "type": "integer",
+              "enum": [
+                1,
+                2,
+                3
+              ]
+            },
+            "genre": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

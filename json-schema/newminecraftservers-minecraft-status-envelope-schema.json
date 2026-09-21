@@ -1,0 +1,229 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/newminecraftservers/main/json-schema/newminecraftservers-minecraft-status-envelope-schema.json",
+  "title": "MinecraftStatusEnvelope",
+  "x-generated": "2026-09-21",
+  "x-method": "derived",
+  "x-generator": "derive-json-schema.py",
+  "x-source": "openapi/newminecraftservers-openapi.yml#/components/schemas/MinecraftStatusEnvelope",
+  "type": "object",
+  "required": [
+    "data"
+  ],
+  "properties": {
+    "data": {
+      "$ref": "#/$defs/MinecraftStatus"
+    }
+  },
+  "$defs": {
+    "CheckState": {
+      "type": "string",
+      "enum": [
+        "operational",
+        "degraded",
+        "outage",
+        "unknown"
+      ]
+    },
+    "MinecraftStatus": {
+      "type": "object",
+      "required": [
+        "overall",
+        "monitoringSince",
+        "intervalSeconds",
+        "checks",
+        "incidents",
+        "pastIncidents"
+      ],
+      "properties": {
+        "overall": {
+          "$ref": "#/$defs/CheckState"
+        },
+        "checkedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "monitoringSince": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "intervalSeconds": {
+          "type": "integer"
+        },
+        "checks": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StatusCheck"
+          }
+        },
+        "xbox": {
+          "type": "object",
+          "required": [
+            "state",
+            "checkedAt",
+            "incidents"
+          ],
+          "properties": {
+            "state": {
+              "type": "string",
+              "enum": [
+                "none",
+                "impacted",
+                "maintenance",
+                "unknown"
+              ]
+            },
+            "checkedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "updatedAt": {
+              "type": "string",
+              "format": "date-time"
+            },
+            "multiplayer": {
+              "type": "string",
+              "enum": [
+                "none",
+                "impacted",
+                "maintenance",
+                "unknown"
+              ]
+            },
+            "incidents": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "title"
+                ],
+                "properties": {
+                  "title": {
+                    "type": "string"
+                  },
+                  "description": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "incidents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StatusIncident"
+          }
+        },
+        "pastIncidents": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/StatusIncident"
+          }
+        }
+      }
+    },
+    "StatusCheck": {
+      "type": "object",
+      "required": [
+        "id",
+        "label",
+        "description",
+        "host",
+        "group",
+        "state",
+        "timeline"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "group": {
+          "type": "string",
+          "enum": [
+            "signin",
+            "services"
+          ]
+        },
+        "state": {
+          "$ref": "#/$defs/CheckState"
+        },
+        "latencyMs": {
+          "type": "number"
+        },
+        "detail": {
+          "type": "string"
+        },
+        "checkedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "uptime24h": {
+          "type": "number"
+        },
+        "uptime30d": {
+          "type": "number"
+        },
+        "uptime90d": {
+          "type": "number"
+        },
+        "timeline": {
+          "type": "array",
+          "items": {
+            "type": [
+              "string",
+              "null"
+            ],
+            "enum": [
+              "operational",
+              "degraded",
+              "outage",
+              "unknown"
+            ]
+          }
+        }
+      }
+    },
+    "StatusIncident": {
+      "type": "object",
+      "required": [
+        "checkId",
+        "label",
+        "state",
+        "startedAt"
+      ],
+      "properties": {
+        "checkId": {
+          "type": "string"
+        },
+        "label": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "degraded",
+            "outage"
+          ]
+        },
+        "startedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "endedAt": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

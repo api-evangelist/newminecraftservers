@@ -1,0 +1,105 @@
+# NewMinecraftServers
+
+> A directory of new Minecraft servers for Java and Bedrock Edition. Every listing is checked automatically and shows the server IP, whether it was online at its latest check, players online, the versions it accepts and its gamemodes. Newest servers are listed first on the home page.
+
+Each server has a page at /server/<slug> with its IP, live status and join steps, a /stats tab with player-count history, and a /vote tab where players vote once a day. Offline servers are hidden from lists by default.
+
+## Server lists
+
+- [New Minecraft servers](https://newminecraftservers.net/): the newest listings first
+- [Java Edition servers](https://newminecraftservers.net/servers/java)
+- [Bedrock Edition and cross-play servers](https://newminecraftservers.net/servers/bedrock)
+- [Top voted servers this month](https://newminecraftservers.net/servers/top-voted)
+- [Random Minecraft server](https://newminecraftservers.net/servers/random): a shuffled pick of online servers
+- [Servers by Minecraft version](https://newminecraftservers.net/servers/versions)
+- [All gamemodes](https://newminecraftservers.net/gamemodes)
+- [Survival servers](https://newminecraftservers.net/servers/survival)
+- [PvP servers](https://newminecraftservers.net/servers/pvp)
+- [Economy servers](https://newminecraftservers.net/servers/economy)
+- [Vanilla servers](https://newminecraftservers.net/servers/vanilla)
+- [SMP servers](https://newminecraftservers.net/servers/smp)
+- [Skyblock servers](https://newminecraftservers.net/servers/skyblock)
+- [Roleplay servers](https://newminecraftservers.net/servers/roleplay)
+- [Towny servers](https://newminecraftservers.net/servers/towny)
+- [Anarchy servers](https://newminecraftservers.net/servers/anarchy)
+- [Factions servers](https://newminecraftservers.net/servers/factions)
+- [Creative servers](https://newminecraftservers.net/servers/creative)
+- [KitPvP servers](https://newminecraftservers.net/servers/kitpvp)
+- [Parkour servers](https://newminecraftservers.net/servers/parkour)
+- [Lifesteal servers](https://newminecraftservers.net/servers/lifesteal)
+- [Minigames servers](https://newminecraftservers.net/servers/minigames)
+- [BedWars servers](https://newminecraftservers.net/servers/bedwars)
+- [Prison servers](https://newminecraftservers.net/servers/prison)
+- [Modded servers](https://newminecraftservers.net/servers/modded)
+- [RPG servers](https://newminecraftservers.net/servers/rpg)
+- [Earth servers](https://newminecraftservers.net/servers/earth)
+- [OneBlock servers](https://newminecraftservers.net/servers/oneblock)
+- [Cobblemon servers](https://newminecraftservers.net/servers/cobblemon)
+- [Pixelmon servers](https://newminecraftservers.net/servers/pixelmon)
+- [Tycoon servers](https://newminecraftservers.net/servers/tycoon)
+- [Medieval servers](https://newminecraftservers.net/servers/medieval)
+- [Hunger Games servers](https://newminecraftservers.net/servers/hungergames)
+- [SkyWars servers](https://newminecraftservers.net/servers/skywars)
+- [Hardcore servers](https://newminecraftservers.net/servers/hardcore)
+- [RLCraft servers](https://newminecraftservers.net/servers/rlcraft)
+- [Manhunt servers](https://newminecraftservers.net/servers/manhunt)
+- [Zombie servers](https://newminecraftservers.net/servers/zombie)
+- [Practice PvP servers](https://newminecraftservers.net/servers/practice)
+- [UHC servers](https://newminecraftservers.net/servers/uhc)
+- [Crystal PvP servers](https://newminecraftservers.net/servers/crystalpvp)
+- [Build Battle servers](https://newminecraftservers.net/servers/buildbattle)
+- [Battle Royale servers](https://newminecraftservers.net/servers/battleroyale)
+- [Capture the Flag servers](https://newminecraftservers.net/servers/ctf)
+
+## Minecraft service status
+
+- [Are the Minecraft Authentication Servers Down?](https://newminecraftservers.net/minecraft-authentication-servers): Are the Minecraft authentication servers down? Live status of every sign-in service, checked each minute, plus fixes for authentication server errors.
+- [Is Minecraft Realms Down?](https://newminecraftservers.net/is-minecraft-realms-down): Is Minecraft Realms down right now? Live Java and Bedrock Realms status, checked every minute, plus fixes for Realms not loading and errors like 504 and 403.
+- [Is Minecraft Down?](https://newminecraftservers.net/is-minecraft-down): Is Minecraft down right now? Live status for Java, Bedrock, Realms and sign-in, checked every minute, plus Xbox, PS5 and Switch outages and what to do.
+
+## Guides
+
+- [How to Play Multiplayer on Minecraft Java](https://newminecraftservers.net/post/how-to-play-multiplayer-on-minecraft-java): Learn the practical ways to join friends and public multiplayer servers in Minecraft Java Edition.
+- [How to Join a Minecraft Server on Bedrock](https://newminecraftservers.net/post/how-to-join-a-minecraft-server-on-bedrock): Add and join a Minecraft server on Bedrock Edition for Windows, phones, tablets, and consoles, including ports and cross-play.
+- [How to Play Minecraft Cross-platform](https://newminecraftservers.net/post/how-to-play-minecraft-cross-platform): Learn which Minecraft editions can play together and how to connect across supported devices.
+- [What Is a Minecraft SMP?](https://newminecraftservers.net/post/what-is-a-minecraft-smp): What SMP means in Minecraft, the main kinds of SMP servers, and how to find and join one.
+- [Minecraft Server Commands: The Admin and Op List](https://newminecraftservers.net/post/minecraft-server-commands): The Minecraft server commands admins use: op, whitelist, kick, ban, gamemode, gamerule, time and stop, with Java and Bedrock syntax and permission levels.
+- [How to Port Forward a Minecraft Server](https://newminecraftservers.net/post/how-to-port-forward-a-minecraft-server): Port forward a Minecraft server step by step: Java and Bedrock ports, your local IP, router rules, firewall, testing, and fixes when it won't work.
+- [How to Play Minecraft With Friends Without a Server](https://newminecraftservers.net/post/how-to-play-minecraft-with-friends-without-a-server): Play your own Minecraft world with friends anywhere without renting a server, paying for a Realm, or opening a port: e4mc, tunnel services, private networks, and what Cloudflare cannot do.
+- [e4mc: The Mod That Puts Your World Online for Free](https://newminecraftservers.net/post/e4mc-minecraft-mod): e4mc opens your Minecraft world to friends over the internet with no server, no port forwarding and nothing for them to install. How it works, how to use it, the commands, and every common error.
+- [Minecraft Server Whitelist: How to Set It Up](https://newminecraftservers.net/post/minecraft-server-whitelist): Set up a Minecraft server whitelist: whitelist commands, whitelist.json, enforce-whitelist and the Bedrock allowlist, plus fixes when it isn't working.
+
+## Free tools
+
+- [Nether Portal Calculator](https://newminecraftservers.net/tools/nether-portal-calculator): Convert Overworld to Nether coordinates and back, check whether your portals will link, and count obsidian. Uses the real Java and Bedrock rules.
+- [Minecraft Circle Generator](https://newminecraftservers.net/tools/minecraft-circle-generator): Free Minecraft circle generator with block counts. Plan circles, ovals, spheres, domes and arches layer by layer, plus a circle chart for common sizes.
+- [Minecraft Server Icon Maker](https://newminecraftservers.net/tools/minecraft-server-icon-maker): Design or convert a 64×64 Minecraft server icon, preview it in the multiplayer list and download server-icon.png. Free, and nothing is uploaded.
+- [Minecraft Pixel Art Generator](https://newminecraftservers.net/tools/minecraft-pixel-art-generator): Turn any picture into Minecraft pixel art with an exact block count: wool, concrete, terracotta and more, a layer-by-layer guide and a .schem file.
+- [Minecraft Map Art Generator](https://newminecraftservers.net/tools/minecraft-map-art-generator): Turn an image into Minecraft map art with the real map colours. Flat or staircase, 1×1 to 4×4 maps, a material list, block heights and a .schem file.
+- [How Long Is a Minecraft Day?](https://newminecraftservers.net/tools/minecraft-day-length): A Minecraft day lasts 20 real minutes (24,000 ticks): 10 min of day, 8 min 20 s of night. See when mobs spawn, when you can sleep, and convert any time.
+- [Minecraft Enchantment Calculator](https://newminecraftservers.net/tools/minecraft-enchantment-calculator): Pick an item and your enchanted books to get the cheapest anvil order, step by step, without hitting "Too Expensive!". Uses the Java and Bedrock rules.
+- [Minecraft Stack Calculator](https://newminecraftservers.net/tools/minecraft-stack-calculator): Convert items to stacks, shulker boxes and double chests, or back. Works for stacks of 64, 16 and 1, with a capacity table for every container.
+- [Minecraft Brewing Chart](https://newminecraftservers.net/tools/minecraft-brewing-chart): Interactive Minecraft brewing chart: every potion recipe step by step, splash and lingering included, with Java and Bedrock durations and the 1.21 potions.
+- [Minecraft Server RAM Calculator](https://newminecraftservers.net/tools/minecraft-server-ram-calculator): Estimate how much RAM your Minecraft server needs from players, Java or Bedrock, Paper, Fabric or Forge, mods and view distance, with the working shown.
+- [Minecraft Color Codes](https://newminecraftservers.net/tools/minecraft-color-codes): All 16 Minecraft color codes and the formatting codes, with § and & codes and hex values. Click to copy, preview text, and see Java vs Bedrock differences.
+- [Minecraft MOTD Generator](https://newminecraftservers.net/tools/minecraft-motd-generator): Design your Minecraft server MOTD with a live server list preview, then copy it for server.properties, BungeeCord, or Velocity as MiniMessage.
+- [Minecraft Gradient Generator](https://newminecraftservers.net/tools/minecraft-gradient-generator): Make gradient text for Minecraft chat, nicknames and ranks. Blend hex colours and copy it as &#RRGGBB, MiniMessage, CMI, §x codes or /tellraw JSON.
+- [Minecraft Text Generator](https://newminecraftservers.net/tools/minecraft-text-generator): Turn any words into Minecraft-style block title text or pixel font lettering, then download a transparent PNG for thumbnails, server banners and Discord.
+- [Minecraft Skin Grabber](https://newminecraftservers.net/tools/minecraft-skin-grabber): Grab any Java player’s skin by name or UUID: front and back renders, model and cape, the PNG to download, and how to wear it in Java or Bedrock.
+- [Minecraft Player Heads](https://newminecraftservers.net/tools/minecraft-player-heads): Get any player’s head: the /give command for Java 1.21 and older versions, a fixed-skin head that never changes, and a sharp head PNG to download.
+- [Minecraft UUID Lookup](https://newminecraftservers.net/tools/minecraft-uuid-lookup): Username to UUID or UUID to name for any Java player, in dashed, undashed and NBT int array formats, plus the offline UUID cracked servers use.
+- [Minecraft Name Checker](https://newminecraftservers.net/tools/minecraft-name-checker): Is a Minecraft Java username taken? Check it with Mojang, test it against the naming rules, and learn why a free-looking name can still be blocked.
+- [Minecraft Username Generator](https://newminecraftservers.net/tools/minecraft-username-generator): Cool, tryhard, funny, aesthetic, cute or short Minecraft username ideas, built around your own word, with a one-click check for names nobody has.
+- [Minecraft Server Status Checker](https://newminecraftservers.net/tools/minecraft-server-status-checker): Check if any Minecraft server is online: players, version, MOTD, icon and ping for Java and Bedrock, with a plain-English reason when it is down.
+- [Minecraft Player Count](https://newminecraftservers.net/minecraft-player-count): Live count of players online now across the Minecraft servers we track, the busiest servers, and official figures for how many people play Minecraft.
+
+## For server owners
+
+- [Add your server](https://newminecraftservers.net/add-server): List your Minecraft server, or claim a listing that is already here. Free, no slots to buy, and the player counts come from our own checks.
+- [Vote rewards](https://newminecraftservers.net/vote-rewards): Connect Votifier so players are rewarded in game when they vote for your server. Works with NuVotifier v2 tokens and legacy Votifier v1 keys.
+- [NewMinecraftServers Companion](https://newminecraftservers.net/plugin): Free, open-source Paper plugin: claim your NewMinecraftServers listing with one command and see player counts, uptime and busiest hours in game.
+
+## For developers
+
+- [Minecraft Server API](https://newminecraftservers.net/minecraft-api): Free Minecraft server API, no key needed: search listed servers, look up addresses, read player history and Minecraft service status as JSON. OpenAPI spec.
+- [OpenAPI 3.0 specification (JSON)](https://newminecraftservers.net/openapi.json): Machine-readable definition of the public read endpoints.

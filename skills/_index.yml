@@ -1,0 +1,18 @@
+generated: 2026-09-21
+method: generated
+api: NewMinecraftServers API
+source: https://newminecraftservers.net/openapi.json
+skills:
+- name: find-minecraft-server
+  file: find-minecraft-server.md
+  description: Search, look up, detail and history for published Minecraft servers.
+  operations:
+  - listServers
+  - lookupServerByAddress
+  - getServerBySlug
+  - getPublicServerHistory
+- name: check-minecraft-status
+  file: check-minecraft-status.md
+  description: Read cached Minecraft online-service (login/session/Realms) status.
+  operations:
+  - getMinecraftServiceStatus

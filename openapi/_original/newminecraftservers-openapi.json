@@ -1,0 +1,303 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "NewMinecraftServers Public API",
+    "version": "1.0.0",
+    "description": "Read-only discovery of published Minecraft servers and cached Minecraft service status. This specification intentionally excludes Paper linking, owner operations, member-only history, and the Chrome extension's Mojang profile proxy."
+  },
+  "servers": [
+    { "url": "https://newminecraftservers.net/api/v1" }
+  ],
+  "tags": [
+    { "name": "Servers", "description": "Published Minecraft server listings and observed history." },
+    { "name": "Minecraft services", "description": "Cached Minecraft authentication and Xbox service health." }
+  ],
+  "paths": {
+    "/servers": {
+      "get": {
+        "tags": ["Servers"],
+        "summary": "Search and list published servers",
+        "operationId": "listServers",
+        "description": "Returns at most 25 published listings per page and supports pages 1-100. Unknown or repeated query parameters are rejected. Search text may be interpreted as a Minecraft mode or edition. Random results support page 1 only, are not cacheable, and have a tighter request limit. This is not a bulk export endpoint.",
+        "parameters": [
+          { "name": "q", "in": "query", "description": "Search text; blank text is ignored.", "schema": { "type": "string", "maxLength": 160 } },
+          { "name": "family", "in": "query", "schema": { "type": "string", "enum": ["all", "new", "cracked"], "default": "all" } },
+          { "name": "mode", "in": "query", "description": "A controlled Minecraft game-mode ID, such as survival, skyblock, or bedwars.", "schema": { "type": "string" } },
+          { "name": "edition", "in": "query", "schema": { "type": "string", "enum": ["java", "bedrock"] } },
+          { "name": "outcome", "in": "query", "schema": { "type": "string", "enum": ["online", "offline", "unknown"] } },
+          { "name": "sort", "in": "query", "schema": { "type": "string", "enum": ["newest", "ranked", "relevance", "random", "votes"] } },
+          { "name": "page", "in": "query", "schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 1 } },
+          { "name": "limit", "in": "query", "schema": { "type": "integer", "minimum": 1, "maximum": 25, "default": 25 } }
+        ],
+        "responses": {
+          "200": { "description": "A page of published server summaries.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ServerListEnvelope" } } } },
+          "400": { "$ref": "#/components/responses/InvalidRequest" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/servers/lookup": {
+      "get": {
+        "tags": ["Servers"],
+        "summary": "Find a published listing by its stored address",
+        "operationId": "lookupServerByAddress",
+        "description": "Exact lookup of an already-stored Java or Bedrock connection. This endpoint does not resolve DNS or ping arbitrary hosts. The default port is 25565; IPv6 with an explicit port uses bracket notation.",
+        "parameters": [
+          { "name": "address", "in": "query", "required": true, "schema": { "type": "string", "minLength": 1, "maxLength": 300 }, "example": "play.example.net:25565" }
+        ],
+        "responses": {
+          "200": { "description": "Published server detail.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ServerDetailEnvelope" } } } },
+          "400": { "$ref": "#/components/responses/InvalidRequest" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/servers/{slug}": {
+      "get": {
+        "tags": ["Servers"],
+        "summary": "Get one published server",
+        "operationId": "getServerBySlug",
+        "parameters": [{ "$ref": "#/components/parameters/ServerSlug" }],
+        "responses": {
+          "200": { "description": "Published server detail.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ServerDetailEnvelope" } } } },
+          "400": { "$ref": "#/components/responses/InvalidRequest" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/servers/{slug}/history": {
+      "get": {
+        "tags": ["Servers"],
+        "summary": "Get public player-count and uptime history",
+        "operationId": "getPublicServerHistory",
+        "description": "Returns stored observations for the published listing's primary connection; reading never triggers a live ping. This public contract covers only 24h, 7d, and 30d. Longer ranges are a separate Paper-credential feature and are not part of this specification.",
+        "parameters": [
+          { "$ref": "#/components/parameters/ServerSlug" },
+          { "name": "range", "in": "query", "schema": { "type": "string", "enum": ["24h", "7d", "30d"], "default": "7d" } }
+        ],
+        "responses": {
+          "200": { "description": "Bucketed public history.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ServerHistoryEnvelope" } } } },
+          "400": { "$ref": "#/components/responses/InvalidRequest" },
+          "404": { "$ref": "#/components/responses/NotFound" },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    },
+    "/minecraft-status": {
+      "get": {
+        "tags": ["Minecraft services"],
+        "summary": "Get cached Minecraft service health",
+        "operationId": "getMinecraftServiceStatus",
+        "description": "Returns the monitor's last cached snapshot. A caller never triggers a new probe.",
+        "responses": {
+          "200": { "description": "Cached service status.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/MinecraftStatusEnvelope" } } } },
+          "429": { "$ref": "#/components/responses/TooManyRequests" },
+          "500": { "$ref": "#/components/responses/InternalError" }
+        }
+      }
+    }
+  },
+  "components": {
+    "parameters": {
+      "ServerSlug": { "name": "slug", "in": "path", "required": true, "schema": { "type": "string", "maxLength": 140, "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$" }, "example": "example-survival" }
+    },
+    "responses": {
+      "InvalidRequest": { "description": "Invalid, unknown, or duplicate input.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "NotFound": { "description": "No published listing matched.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "TooManyRequests": { "description": "The per-process client request limit was reached. Retry-After is 60 seconds.", "headers": { "Retry-After": { "schema": { "type": "integer", "example": 60 } } }, "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } },
+      "InternalError": { "description": "A safe error without internal database details.", "content": { "application/json": { "schema": { "$ref": "#/components/schemas/ErrorEnvelope" } } } }
+    },
+    "schemas": {
+      "ErrorEnvelope": {
+        "type": "object", "required": ["error"], "properties": {
+          "error": { "type": "object", "required": ["code", "message"], "properties": {
+            "code": { "type": "string", "example": "invalid_request" },
+            "message": { "type": "string", "example": "limit must be between 1 and 25" }
+          } }
+        }
+      },
+      "ServerListEnvelope": { "type": "object", "required": ["data"], "properties": { "data": { "$ref": "#/components/schemas/ServerList" } } },
+      "ServerDetailEnvelope": { "type": "object", "required": ["data"], "properties": { "data": { "$ref": "#/components/schemas/ServerDetail" } } },
+      "ServerHistoryEnvelope": { "type": "object", "required": ["data"], "properties": { "data": { "$ref": "#/components/schemas/ServerHistory" } } },
+      "MinecraftStatusEnvelope": { "type": "object", "required": ["data"], "properties": { "data": { "$ref": "#/components/schemas/MinecraftStatus" } } },
+      "ServerList": {
+        "type": "object", "required": ["items", "page", "pageSize", "total", "totalPages", "sort", "scope"],
+        "properties": {
+          "items": { "type": "array", "items": { "$ref": "#/components/schemas/ServerSummary" } },
+          "page": { "type": "integer" }, "pageSize": { "type": "integer" },
+          "total": { "type": "integer" }, "totalPages": { "type": "integer" },
+          "sort": { "type": "string", "enum": ["newest", "ranked", "relevance", "random", "votes"] },
+          "votingOpen": { "type": "boolean" },
+          "hiddenOffline": { "type": "integer" },
+          "scope": { "type": "object", "required": ["total", "online", "playersOnline", "bedrock"], "properties": {
+            "total": { "type": "integer" }, "online": { "type": "integer" },
+            "playersOnline": { "type": "integer" }, "bedrock": { "type": "integer" }
+          } }
+        }
+      },
+      "ServerSummary": {
+        "type": "object", "required": ["id", "slug", "name", "classification", "media", "primaryConnection", "primarySnapshot", "availableEditions", "publishedAt"],
+        "properties": {
+          "id": { "type": "string" }, "slug": { "type": "string" }, "name": { "type": "string" },
+          "shortDescription": { "type": "string" }, "country": { "type": "string" },
+          "classification": { "type": "object", "required": ["genreIds", "tags"], "properties": {
+            "genreIds": { "type": "array", "items": { "type": "string" } },
+            "primaryGenreIds": { "type": "array", "items": { "type": "string" } },
+            "tags": { "type": "array", "items": { "type": "string" } },
+            "gameMode": { "type": "string" }, "cracked": { "type": "boolean" }, "crossplay": { "type": "boolean" }
+          } },
+          "media": { "type": "object", "properties": {
+            "bannerUrl": { "type": "string" }, "iconUrl": { "type": "string" },
+            "motdImageUrl": { "type": "string" }, "motdLines": { "$ref": "#/components/schemas/MotdLines" }
+          } },
+          "primaryConnection": { "$ref": "#/components/schemas/ServerConnection" },
+          "displayAddress": { "type": "object", "required": ["host", "port"], "properties": { "host": { "type": "string" }, "port": { "type": "integer" } } },
+          "primarySnapshot": { "$ref": "#/components/schemas/ServerSnapshot" },
+          "availableEditions": { "type": "array", "items": { "type": "string", "enum": ["java", "bedrock"] } },
+          "publishedAt": { "type": "string", "format": "date-time" },
+          "votes": { "type": "object", "required": ["month", "total"], "properties": { "month": { "type": "integer" }, "total": { "type": "integer" } } },
+          "award": { "type": "object", "required": ["kind", "position"], "properties": {
+            "kind": { "type": "string", "enum": ["players", "votes"] },
+            "position": { "type": "integer", "enum": [1, 2, 3] }, "genre": { "type": "string" }
+          } }
+        }
+      },
+      "ServerDetail": {
+        "allOf": [
+          { "$ref": "#/components/schemas/ServerSummary" },
+          { "type": "object", "required": ["connections", "links", "claimed", "votingOpen", "voteRewards", "firstSeenByUsAt", "lastSeenByUsAt"], "properties": {
+            "description": { "type": "string" },
+            "connections": { "type": "array", "items": { "$ref": "#/components/schemas/ServerConnection" } },
+            "links": { "type": "object", "properties": {
+              "websiteUrl": { "type": "string" }, "discordUrl": { "type": "string" },
+              "storeUrl": { "type": "string" }, "trailerUrl": { "type": "string" }
+            } },
+            "claimed": { "type": "boolean" }, "votingOpen": { "type": "boolean" },
+            "voteRewards": { "type": "boolean" },
+            "discoveredAt": { "type": "string", "format": "date-time" },
+            "firstSeenByUsAt": { "type": "string", "format": "date-time" },
+            "lastSeenByUsAt": { "type": "string", "format": "date-time" },
+            "noindex": { "type": "boolean" }
+          } }
+        ]
+      },
+      "ServerConnection": {
+        "type": "object", "required": ["id", "edition", "host", "port", "role", "populationRelationship"],
+        "properties": {
+          "id": { "type": "string" }, "edition": { "type": "string", "enum": ["java", "bedrock", "unknown"] },
+          "host": { "type": "string" }, "port": { "type": "integer" },
+          "role": { "type": "string", "enum": ["primary", "alternate"] },
+          "populationRelationship": { "type": "string", "enum": ["shared", "separate", "unknown"] },
+          "latest": { "type": "object", "required": ["outcome", "observedAt"], "properties": {
+            "outcome": { "type": "string", "enum": ["online", "offline", "unknown"] },
+            "observedAt": { "type": "string", "format": "date-time" },
+            "playersOnline": { "type": "integer" }, "playersMax": { "type": "integer" },
+            "latencyMs": { "type": "number" }, "protocol": { "type": "integer" },
+            "versionName": { "type": "string" }, "motdPlain": { "type": "string" },
+            "motdLines": { "$ref": "#/components/schemas/MotdLines" }
+          } }
+        }
+      },
+      "ServerSnapshot": {
+        "type": "object", "required": ["connectionId", "edition", "outcome", "observedAt"],
+        "properties": {
+          "connectionId": { "type": "string" },
+          "edition": { "type": "string", "enum": ["java", "bedrock", "unknown"] },
+          "outcome": { "type": "string", "enum": ["online", "offline", "unknown"] },
+          "observedAt": { "type": "string", "format": "date-time" },
+          "playersOnline": { "type": "integer" }, "playersMax": { "type": "integer" },
+          "protocol": { "type": "integer" }, "versionName": { "type": "string" }
+        }
+      },
+      "MotdLines": { "type": "array", "items": { "type": "array", "items": {
+        "type": "object", "required": ["text"], "properties": {
+          "text": { "type": "string" }, "color": { "type": "string", "pattern": "^#[0-9a-fA-F]{6}$" },
+          "bold": { "type": "boolean" }, "italic": { "type": "boolean" },
+          "underline": { "type": "boolean" }, "strike": { "type": "boolean" }
+        }
+      } } },
+      "ServerHistory": {
+        "type": "object", "required": ["range", "from", "events", "resolution", "points", "summary", "versions", "motdChanges"],
+        "properties": {
+          "range": { "type": "string", "enum": ["24h", "7d", "30d"] },
+          "from": { "type": "string", "format": "date-time" },
+          "resolution": { "type": "string", "enum": ["sample", "hour", "day"] },
+          "points": { "type": "array", "items": { "type": "object", "required": ["t"], "properties": {
+            "t": { "type": "string", "format": "date-time" },
+            "players": { "type": "number" }, "peak": { "type": "integer" }, "low": { "type": "integer" },
+            "uptime": { "type": "number", "minimum": 0, "maximum": 1 }
+          } } },
+          "events": { "type": "array", "items": { "type": "object", "required": ["t", "kind"], "properties": {
+            "t": { "type": "string", "format": "date-time" },
+            "kind": { "type": "string", "enum": ["version", "motd", "icon", "outage", "slots"] }
+          } } },
+          "summary": { "type": "object", "required": ["checks", "daysCovered"], "properties": {
+            "checks": { "type": "integer" }, "daysCovered": { "type": "integer" },
+            "peak": { "type": "object", "required": ["players", "at"], "properties": {
+              "players": { "type": "integer" }, "at": { "type": "string", "format": "date-time" }
+            } },
+            "averagePlayers": { "type": "number" },
+            "uptimeRatio": { "type": "number", "minimum": 0, "maximum": 1 },
+            "busiestHourUtc": { "type": "integer", "minimum": 0, "maximum": 23 }
+          } },
+          "versions": { "type": "array", "items": { "type": "object", "required": ["versionName", "since"], "properties": {
+            "versionName": { "type": "string" }, "since": { "type": "string", "format": "date-time" }
+          } } },
+          "motdChanges": { "type": "integer" },
+          "firstCheckAt": { "type": "string", "format": "date-time" }
+        }
+      },
+      "MinecraftStatus": {
+        "type": "object", "required": ["overall", "monitoringSince", "intervalSeconds", "checks", "incidents", "pastIncidents"],
+        "properties": {
+          "overall": { "$ref": "#/components/schemas/CheckState" },
+          "checkedAt": { "type": "string", "format": "date-time" },
+          "monitoringSince": { "type": "string", "format": "date-time" },
+          "intervalSeconds": { "type": "integer" },
+          "checks": { "type": "array", "items": { "$ref": "#/components/schemas/StatusCheck" } },
+          "xbox": { "type": "object", "required": ["state", "checkedAt", "incidents"], "properties": {
+            "state": { "type": "string", "enum": ["none", "impacted", "maintenance", "unknown"] },
+            "checkedAt": { "type": "string", "format": "date-time" },
+            "updatedAt": { "type": "string", "format": "date-time" },
+            "multiplayer": { "type": "string", "enum": ["none", "impacted", "maintenance", "unknown"] },
+            "incidents": { "type": "array", "items": { "type": "object", "required": ["title"], "properties": {
+              "title": { "type": "string" }, "description": { "type": "string" }
+            } } }
+          } },
+          "incidents": { "type": "array", "items": { "$ref": "#/components/schemas/StatusIncident" } },
+          "pastIncidents": { "type": "array", "items": { "$ref": "#/components/schemas/StatusIncident" } }
+        }
+      },
+      "CheckState": { "type": "string", "enum": ["operational", "degraded", "outage", "unknown"] },
+      "StatusCheck": {
+        "type": "object", "required": ["id", "label", "description", "host", "group", "state", "timeline"],
+        "properties": {
+          "id": { "type": "string" }, "label": { "type": "string" },
+          "description": { "type": "string" }, "host": { "type": "string" },
+          "group": { "type": "string", "enum": ["signin", "services"] },
+          "state": { "$ref": "#/components/schemas/CheckState" },
+          "latencyMs": { "type": "number" }, "detail": { "type": "string" },
+          "checkedAt": { "type": "string", "format": "date-time" },
+          "uptime24h": { "type": "number" }, "uptime30d": { "type": "number" },
+          "uptime90d": { "type": "number" },
+          "timeline": { "type": "array", "items": { "type": "string", "enum": ["operational", "degraded", "outage", "unknown"], "nullable": true } }
+        }
+      },
+      "StatusIncident": {
+        "type": "object", "required": ["checkId", "label", "state", "startedAt"],
+        "properties": {
+          "checkId": { "type": "string" }, "label": { "type": "string" },
+          "state": { "type": "string", "enum": ["degraded", "outage"] },
+          "startedAt": { "type": "string", "format": "date-time" },
+          "endedAt": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

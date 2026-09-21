@@ -1,0 +1,26 @@
+generated: 2026-09-21
+method: searched
+source: https://newminecraftservers.net/minecraft-api
+audience: developer-api
+pricing_basis: free
+published: false
+delivery:
+  delivery: managed
+plan_count: 1
+name: NewMinecraftServers Public API
+plans:
+- name: Free
+  description: Free public read-only API with no key and no sign-up, CORS enabled,
+    JSON over HTTPS. Covers server search/list, address lookup, public server history
+    and cached Minecraft service status.
+  price: Free
+  price_text: Free public API · no key
+  features:
+  - No API key or account required
+  - CORS enabled
+  - Five read-only endpoints
+  limits:
+  - No published per-client quota (429 + Retry-After 60s on a per-process limit)
+  - No uptime guarantee
+note: The provider publishes no paid tiers or pricing table for the API; it is a single
+  free offering. price_text is the verbatim page label; there is no numeric price.
