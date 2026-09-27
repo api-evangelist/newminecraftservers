@@ -1,0 +1,228 @@
+openapi: 3.2.0
+info:
+  title: Newminecraftservers Minecraft services API
+  version: 1.0.0
+  description: 'Operations tagged Minecraft services across 2 of this provider''s published API definitions: newminecraftservers-openapi.json, newminecraftservers-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://newminecraftservers.net/api/v1
+tags:
+- name: Minecraft services
+  description: Cached Minecraft authentication and Xbox service health.
+paths:
+  /minecraft-status:
+    get:
+      tags:
+      - Minecraft services
+      summary: Get cached Minecraft service health
+      operationId: getMinecraftServiceStatus
+      description: Returns the monitor's last cached snapshot. A caller never triggers a new probe.
+      responses:
+        '200':
+          description: Cached service status.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MinecraftStatusEnvelope'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    servers:
+    - url: https://newminecraftservers.net/api/v1
+components:
+  schemas:
+    ErrorEnvelope:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: invalid_request
+            message:
+              type: string
+              example: limit must be between 1 and 25
+    MinecraftStatus:
+      type: object
+      required:
+      - overall
+      - monitoringSince
+      - intervalSeconds
+      - checks
+      - incidents
+      - pastIncidents
+      properties:
+        overall:
+          $ref: '#/components/schemas/CheckState'
+        checkedAt:
+          type: string
+          format: date-time
+        monitoringSince:
+          type: string
+          format: date-time
+        intervalSeconds:
+          type: integer
+        checks:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusCheck'
+        xbox:
+          type: object
+          required:
+          - state
+          - checkedAt
+          - incidents
+          properties:
+            state:
+              type: string
+              enum:
+              - none
+              - impacted
+              - maintenance
+              - unknown
+            checkedAt:
+              type: string
+              format: date-time
+            updatedAt:
+              type: string
+              format: date-time
+            multiplayer:
+              type: string
+              enum:
+              - none
+              - impacted
+              - maintenance
+              - unknown
+            incidents:
+              type: array
+              items:
+                type: object
+                required:
+                - title
+                properties:
+                  title:
+                    type: string
+                  description:
+                    type: string
+        incidents:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusIncident'
+        pastIncidents:
+          type: array
+          items:
+            $ref: '#/components/schemas/StatusIncident'
+    StatusCheck:
+      type: object
+      required:
+      - id
+      - label
+      - description
+      - host
+      - group
+      - state
+      - timeline
+      properties:
+        id:
+          type: string
+        label:
+          type: string
+        description:
+          type: string
+        host:
+          type: string
+        group:
+          type: string
+          enum:
+          - signin
+          - services
+        state:
+          $ref: '#/components/schemas/CheckState'
+        latencyMs:
+          type: number
+        detail:
+          type: string
+        checkedAt:
+          type: string
+          format: date-time
+        uptime24h:
+          type: number
+        uptime30d:
+          type: number
+        uptime90d:
+          type: number
+        timeline:
+          type: array
+          items:
+            type:
+            - string
+            - 'null'
+            enum:
+            - operational
+            - degraded
+            - outage
+            - unknown
+    StatusIncident:
+      type: object
+      required:
+      - checkId
+      - label
+      - state
+      - startedAt
+      properties:
+        checkId:
+          type: string
+        label:
+          type: string
+        state:
+          type: string
+          enum:
+          - degraded
+          - outage
+        startedAt:
+          type: string
+          format: date-time
+        endedAt:
+          type: string
+          format: date-time
+    MinecraftStatusEnvelope:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/MinecraftStatus'
+    CheckState:
+      type: string
+      enum:
+      - operational
+      - degraded
+      - outage
+      - unknown
+  responses:
+    TooManyRequests:
+      description: The per-process client request limit was reached. Retry-After is 60 seconds.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+            example: 60
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: A safe error without internal database details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+x-refined-from:
+- newminecraftservers-openapi.json
+- newminecraftservers-openapi.yml

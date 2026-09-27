@@ -1,0 +1,25 @@
+{
+  "provider": "newminecraftservers",
+  "sources": [
+    "_original/newminecraftservers-openapi.json",
+    "newminecraftservers-openapi.yml"
+  ],
+  "outputs": [
+    "newminecraftservers-minecraft-services-api-openapi.yml",
+    "newminecraftservers-servers-api-openapi.yml"
+  ],
+  "archived": [
+    "archived openapi/newminecraftservers-openapi.yml"
+  ],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "newminecraftservers-openapi.json: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "newminecraftservers-openapi.yml: upgraded openapi 3.0.3 -> OpenAPI 3.2.0",
+    "tag 'Minecraft services' spans 2 source specs (newminecraftservers-openapi.json, newminecraftservers-openapi.yml): per-path servers applied",
+    "tag 'Servers' spans 2 source specs (newminecraftservers-openapi.json, newminecraftservers-openapi.yml): per-path servers applied",
+    "apis.yml register: written (+2 apis, 2 total)"
+  ],
+  "skipped": []
+}

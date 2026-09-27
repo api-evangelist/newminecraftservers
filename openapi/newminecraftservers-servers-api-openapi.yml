@@ -1,0 +1,710 @@
+openapi: 3.2.0
+info:
+  title: Newminecraftservers Servers API
+  version: 1.0.0
+  description: 'Operations tagged Servers across 2 of this provider''s published API definitions: newminecraftservers-openapi.json, newminecraftservers-openapi.yml. Each path carries the servers of the definition it was published in.'
+servers:
+- url: https://newminecraftservers.net/api/v1
+tags:
+- name: Servers
+  description: Published Minecraft server listings and observed history.
+paths:
+  /servers:
+    get:
+      tags:
+      - Servers
+      summary: Search and list published servers
+      operationId: listServers
+      description: Returns at most 25 published listings per page and supports pages 1-100. Unknown or repeated query parameters are rejected. Search text may be interpreted as a Minecraft mode or edition. Random results support page 1 only, are not cacheable, and have a tighter request limit. This is not a bulk export endpoint.
+      parameters:
+      - name: q
+        in: query
+        description: Search text; blank text is ignored.
+        schema:
+          type: string
+          maxLength: 160
+      - name: family
+        in: query
+        schema:
+          type: string
+          enum:
+          - all
+          - new
+          - cracked
+          default: all
+      - name: mode
+        in: query
+        description: A controlled Minecraft game-mode ID, such as survival, skyblock, or bedwars.
+        schema:
+          type: string
+      - name: edition
+        in: query
+        schema:
+          type: string
+          enum:
+          - java
+          - bedrock
+      - name: outcome
+        in: query
+        schema:
+          type: string
+          enum:
+          - online
+          - offline
+          - unknown
+      - name: sort
+        in: query
+        schema:
+          type: string
+          enum:
+          - newest
+          - ranked
+          - relevance
+          - random
+          - votes
+      - name: page
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 100
+          default: 1
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 25
+          default: 25
+      responses:
+        '200':
+          description: A page of published server summaries.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerListEnvelope'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    servers:
+    - url: https://newminecraftservers.net/api/v1
+  /servers/lookup:
+    get:
+      tags:
+      - Servers
+      summary: Find a published listing by its stored address
+      operationId: lookupServerByAddress
+      description: Exact lookup of an already-stored Java or Bedrock connection. This endpoint does not resolve DNS or ping arbitrary hosts. The default port is 25565; IPv6 with an explicit port uses bracket notation.
+      parameters:
+      - name: address
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 300
+        example: play.example.net:25565
+      responses:
+        '200':
+          description: Published server detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerDetailEnvelope'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    servers:
+    - url: https://newminecraftservers.net/api/v1
+  /servers/{slug}:
+    get:
+      tags:
+      - Servers
+      summary: Get one published server
+      operationId: getServerBySlug
+      parameters:
+      - $ref: '#/components/parameters/ServerSlug'
+      responses:
+        '200':
+          description: Published server detail.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerDetailEnvelope'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    servers:
+    - url: https://newminecraftservers.net/api/v1
+  /servers/{slug}/history:
+    get:
+      tags:
+      - Servers
+      summary: Get public player-count and uptime history
+      operationId: getPublicServerHistory
+      description: Returns stored observations for the published listing's primary connection; reading never triggers a live ping. This public contract covers only 24h, 7d, and 30d. Longer ranges are a separate Paper-credential feature and are not part of this specification.
+      parameters:
+      - $ref: '#/components/parameters/ServerSlug'
+      - name: range
+        in: query
+        schema:
+          type: string
+          enum:
+          - 24h
+          - 7d
+          - 30d
+          default: 7d
+      responses:
+        '200':
+          description: Bucketed public history.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServerHistoryEnvelope'
+        '400':
+          $ref: '#/components/responses/InvalidRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '429':
+          $ref: '#/components/responses/TooManyRequests'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    servers:
+    - url: https://newminecraftservers.net/api/v1
+components:
+  schemas:
+    MotdLines:
+      type: array
+      items:
+        type: array
+        items:
+          type: object
+          required:
+          - text
+          properties:
+            text:
+              type: string
+            color:
+              type: string
+              pattern: ^#[0-9a-fA-F]{6}$
+            bold:
+              type: boolean
+            italic:
+              type: boolean
+            underline:
+              type: boolean
+            strike:
+              type: boolean
+    ErrorEnvelope:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: invalid_request
+            message:
+              type: string
+              example: limit must be between 1 and 25
+    ServerListEnvelope:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ServerList'
+    ServerDetail:
+      allOf:
+      - $ref: '#/components/schemas/ServerSummary'
+      - type: object
+        required:
+        - connections
+        - links
+        - claimed
+        - votingOpen
+        - voteRewards
+        - firstSeenByUsAt
+        - lastSeenByUsAt
+        properties:
+          description:
+            type: string
+          connections:
+            type: array
+            items:
+              $ref: '#/components/schemas/ServerConnection'
+          links:
+            type: object
+            properties:
+              websiteUrl:
+                type: string
+              discordUrl:
+                type: string
+              storeUrl:
+                type: string
+              trailerUrl:
+                type: string
+          claimed:
+            type: boolean
+          votingOpen:
+            type: boolean
+          voteRewards:
+            type: boolean
+          discoveredAt:
+            type: string
+            format: date-time
+          firstSeenByUsAt:
+            type: string
+            format: date-time
+          lastSeenByUsAt:
+            type: string
+            format: date-time
+          noindex:
+            type: boolean
+    ServerSummary:
+      type: object
+      required:
+      - id
+      - slug
+      - name
+      - classification
+      - media
+      - primaryConnection
+      - primarySnapshot
+      - availableEditions
+      - publishedAt
+      properties:
+        id:
+          type: string
+        slug:
+          type: string
+        name:
+          type: string
+        shortDescription:
+          type: string
+        country:
+          type: string
+        classification:
+          type: object
+          required:
+          - genreIds
+          - tags
+          properties:
+            genreIds:
+              type: array
+              items:
+                type: string
+            primaryGenreIds:
+              type: array
+              items:
+                type: string
+            tags:
+              type: array
+              items:
+                type: string
+            gameMode:
+              type: string
+            cracked:
+              type: boolean
+            crossplay:
+              type: boolean
+        media:
+          type: object
+          properties:
+            bannerUrl:
+              type: string
+            iconUrl:
+              type: string
+            motdImageUrl:
+              type: string
+            motdLines:
+              $ref: '#/components/schemas/MotdLines'
+        primaryConnection:
+          $ref: '#/components/schemas/ServerConnection'
+        displayAddress:
+          type: object
+          required:
+          - host
+          - port
+          properties:
+            host:
+              type: string
+            port:
+              type: integer
+        primarySnapshot:
+          $ref: '#/components/schemas/ServerSnapshot'
+        availableEditions:
+          type: array
+          items:
+            type: string
+            enum:
+            - java
+            - bedrock
+        publishedAt:
+          type: string
+          format: date-time
+        votes:
+          type: object
+          required:
+          - month
+          - total
+          properties:
+            month:
+              type: integer
+            total:
+              type: integer
+        award:
+          type: object
+          required:
+          - kind
+          - position
+          properties:
+            kind:
+              type: string
+              enum:
+              - players
+              - votes
+            position:
+              type: integer
+              enum:
+              - 1
+              - 2
+              - 3
+            genre:
+              type: string
+    ServerHistoryEnvelope:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ServerHistory'
+    ServerDetailEnvelope:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ServerDetail'
+    ServerConnection:
+      type: object
+      required:
+      - id
+      - edition
+      - host
+      - port
+      - role
+      - populationRelationship
+      properties:
+        id:
+          type: string
+        edition:
+          type: string
+          enum:
+          - java
+          - bedrock
+          - unknown
+        host:
+          type: string
+        port:
+          type: integer
+        role:
+          type: string
+          enum:
+          - primary
+          - alternate
+        populationRelationship:
+          type: string
+          enum:
+          - shared
+          - separate
+          - unknown
+        latest:
+          type: object
+          required:
+          - outcome
+          - observedAt
+          properties:
+            outcome:
+              type: string
+              enum:
+              - online
+              - offline
+              - unknown
+            observedAt:
+              type: string
+              format: date-time
+            playersOnline:
+              type: integer
+            playersMax:
+              type: integer
+            latencyMs:
+              type: number
+            protocol:
+              type: integer
+            versionName:
+              type: string
+            motdPlain:
+              type: string
+            motdLines:
+              $ref: '#/components/schemas/MotdLines'
+    ServerList:
+      type: object
+      required:
+      - items
+      - page
+      - pageSize
+      - total
+      - totalPages
+      - sort
+      - scope
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServerSummary'
+        page:
+          type: integer
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+        sort:
+          type: string
+          enum:
+          - newest
+          - ranked
+          - relevance
+          - random
+          - votes
+        votingOpen:
+          type: boolean
+        hiddenOffline:
+          type: integer
+        scope:
+          type: object
+          required:
+          - total
+          - online
+          - playersOnline
+          - bedrock
+          properties:
+            total:
+              type: integer
+            online:
+              type: integer
+            playersOnline:
+              type: integer
+            bedrock:
+              type: integer
+    ServerSnapshot:
+      type: object
+      required:
+      - connectionId
+      - edition
+      - outcome
+      - observedAt
+      properties:
+        connectionId:
+          type: string
+        edition:
+          type: string
+          enum:
+          - java
+          - bedrock
+          - unknown
+        outcome:
+          type: string
+          enum:
+          - online
+          - offline
+          - unknown
+        observedAt:
+          type: string
+          format: date-time
+        playersOnline:
+          type: integer
+        playersMax:
+          type: integer
+        protocol:
+          type: integer
+        versionName:
+          type: string
+    ServerHistory:
+      type: object
+      required:
+      - range
+      - from
+      - events
+      - resolution
+      - points
+      - summary
+      - versions
+      - motdChanges
+      properties:
+        range:
+          type: string
+          enum:
+          - 24h
+          - 7d
+          - 30d
+        from:
+          type: string
+          format: date-time
+        resolution:
+          type: string
+          enum:
+          - sample
+          - hour
+          - day
+        points:
+          type: array
+          items:
+            type: object
+            required:
+            - t
+            properties:
+              t:
+                type: string
+                format: date-time
+              players:
+                type: number
+              peak:
+                type: integer
+              low:
+                type: integer
+              uptime:
+                type: number
+                minimum: 0
+                maximum: 1
+        events:
+          type: array
+          items:
+            type: object
+            required:
+            - t
+            - kind
+            properties:
+              t:
+                type: string
+                format: date-time
+              kind:
+                type: string
+                enum:
+                - version
+                - motd
+                - icon
+                - outage
+                - slots
+        summary:
+          type: object
+          required:
+          - checks
+          - daysCovered
+          properties:
+            checks:
+              type: integer
+            daysCovered:
+              type: integer
+            peak:
+              type: object
+              required:
+              - players
+              - at
+              properties:
+                players:
+                  type: integer
+                at:
+                  type: string
+                  format: date-time
+            averagePlayers:
+              type: number
+            uptimeRatio:
+              type: number
+              minimum: 0
+              maximum: 1
+            busiestHourUtc:
+              type: integer
+              minimum: 0
+              maximum: 23
+        versions:
+          type: array
+          items:
+            type: object
+            required:
+            - versionName
+            - since
+            properties:
+              versionName:
+                type: string
+              since:
+                type: string
+                format: date-time
+        motdChanges:
+          type: integer
+        firstCheckAt:
+          type: string
+          format: date-time
+  responses:
+    InvalidRequest:
+      description: Invalid, unknown, or duplicate input.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: A safe error without internal database details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: No published listing matched.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    TooManyRequests:
+      description: The per-process client request limit was reached. Retry-After is 60 seconds.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+            example: 60
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+  parameters:
+    ServerSlug:
+      name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+        maxLength: 140
+        pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+      example: example-survival
+x-refined-from:
+- newminecraftservers-openapi.json
+- newminecraftservers-openapi.yml

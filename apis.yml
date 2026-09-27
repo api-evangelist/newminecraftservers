@@ -78,19 +78,16 @@ maintainers:
 - FN: NewMinecraftServers
   url: https://newminecraftservers.net
 apis:
-- name: NewMinecraftServers API
-  description: 'Free, no-key read-only API for discovering published Minecraft servers
-    and reading cached Minecraft service status. Five GET endpoints under /api/v1:
-    server search/list, address lookup, server detail, public player-count history,
-    and Minecraft service status. JSON over HTTPS with CORS enabled.'
+- aid: newminecraftservers:newminecraftservers-minecraft-services-api
+  name: NewMinecraftServers Minecraft services API
+  description: Cached Minecraft authentication and Xbox service health.
   humanURL: https://newminecraftservers.net/minecraft-api
   baseURL: https://newminecraftservers.net/api/v1
+  tags:
+  - Minecraft services
   properties:
   - type: OpenAPI
-    url: openapi/newminecraftservers-openapi.yml
-  - type: OpenAPI
-    name: OpenAPI (provider-hosted)
-    url: https://newminecraftservers.net/openapi.json
+    url: openapi/newminecraftservers-minecraft-services-api-openapi.yml
   - type: Documentation
     url: https://newminecraftservers.net/minecraft-api
   - type: APIReference
@@ -103,8 +100,28 @@ apis:
     url: json-schema/newminecraftservers-server-detail-envelope-schema.json
   - type: JSONSchema
     url: json-schema/newminecraftservers-server-list-envelope-schema.json
-  aid: newminecraftservers:newminecraftservers-api
-  image: https://newminecraftservers.net/og/index.png?v=1.82871
+- aid: newminecraftservers:newminecraftservers-servers-api
+  name: NewMinecraftServers Servers API
+  description: Published Minecraft server listings and observed history.
+  humanURL: https://newminecraftservers.net/minecraft-api
+  baseURL: https://newminecraftservers.net/api/v1
+  tags:
+  - Servers
+  properties:
+  - type: OpenAPI
+    url: openapi/newminecraftservers-servers-api-openapi.yml
+  - type: Documentation
+    url: https://newminecraftservers.net/minecraft-api
+  - type: APIReference
+    url: https://newminecraftservers.net/minecraft-api
+  - type: JSONSchema
+    url: json-schema/newminecraftservers-minecraft-status-envelope-schema.json
+  - type: JSONSchema
+    url: json-schema/newminecraftservers-server-history-envelope-schema.json
+  - type: JSONSchema
+    url: json-schema/newminecraftservers-server-detail-envelope-schema.json
+  - type: JSONSchema
+    url: json-schema/newminecraftservers-server-list-envelope-schema.json
 x-enrichment:
   date: '2026-09-21'
   status: enriched
