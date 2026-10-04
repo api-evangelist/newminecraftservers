@@ -177,44 +177,14 @@ paths:
         '500':
           $ref: '#/components/responses/InternalError'
 components:
-  responses:
-    InvalidRequest:
-      description: Invalid, unknown, or duplicate input.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    NotFound:
-      description: No published listing matched.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    InternalError:
-      description: A safe error without internal database details.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
-    TooManyRequests:
-      description: The per-process client request limit was reached. Retry-After is 60 seconds.
-      headers:
-        Retry-After:
-          schema:
-            type: integer
-            example: 60
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
   schemas:
-    ServerHistoryEnvelope:
+    ServerListEnvelope:
       type: object
       required:
       - data
       properties:
         data:
-          $ref: '#/components/schemas/ServerHistory'
+          $ref: '#/components/schemas/ServerList'
     ServerHistory:
       type: object
       required:
@@ -330,68 +300,104 @@ components:
         firstCheckAt:
           type: string
           format: date-time
-    ServerConnection:
+    ServerDetail:
+      allOf:
+      - $ref: '#/components/schemas/ServerSummary'
+      - type: object
+        required:
+        - connections
+        - links
+        - claimed
+        - votingOpen
+        - voteRewards
+        - firstSeenByUsAt
+        - lastSeenByUsAt
+        properties:
+          description:
+            type: string
+          connections:
+            type: array
+            items:
+              $ref: '#/components/schemas/ServerConnection'
+          links:
+            type: object
+            properties:
+              websiteUrl:
+                type: string
+              discordUrl:
+                type: string
+              storeUrl:
+                type: string
+              trailerUrl:
+                type: string
+          claimed:
+            type: boolean
+          votingOpen:
+            type: boolean
+          voteRewards:
+            type: boolean
+          discoveredAt:
+            type: string
+            format: date-time
+          firstSeenByUsAt:
+            type: string
+            format: date-time
+          lastSeenByUsAt:
+            type: string
+            format: date-time
+          noindex:
+            type: boolean
+    ServerList:
       type: object
       required:
-      - id
-      - edition
-      - host
-      - port
-      - role
-      - populationRelationship
+      - items
+      - page
+      - pageSize
+      - total
+      - totalPages
+      - sort
+      - scope
       properties:
-        id:
-          type: string
-        edition:
-          type: string
-          enum:
-          - java
-          - bedrock
-          - unknown
-        host:
-          type: string
-        port:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ServerSummary'
+        page:
           type: integer
-        role:
+        pageSize:
+          type: integer
+        total:
+          type: integer
+        totalPages:
+          type: integer
+        sort:
           type: string
           enum:
-          - primary
-          - alternate
-        populationRelationship:
-          type: string
-          enum:
-          - shared
-          - separate
-          - unknown
-        latest:
+          - newest
+          - ranked
+          - relevance
+          - random
+          - votes
+        votingOpen:
+          type: boolean
+        hiddenOffline:
+          type: integer
+        scope:
           type: object
           required:
-          - outcome
-          - observedAt
+          - total
+          - online
+          - playersOnline
+          - bedrock
           properties:
-            outcome:
-              type: string
-              enum:
-              - online
-              - offline
-              - unknown
-            observedAt:
-              type: string
-              format: date-time
+            total:
+              type: integer
+            online:
+              type: integer
             playersOnline:
               type: integer
-            playersMax:
+            bedrock:
               type: integer
-            latencyMs:
-              type: number
-            protocol:
-              type: integer
-            versionName:
-              type: string
-            motdPlain:
-              type: string
-            motdLines:
-              $ref: '#/components/schemas/MotdLines'
     ServerSummary:
       type: object
       required:
@@ -503,57 +509,20 @@ components:
               - 3
             genre:
               type: string
-    ServerList:
+    ServerDetailEnvelope:
       type: object
       required:
-      - items
-      - page
-      - pageSize
-      - total
-      - totalPages
-      - sort
-      - scope
+      - data
       properties:
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ServerSummary'
-        page:
-          type: integer
-        pageSize:
-          type: integer
-        total:
-          type: integer
-        totalPages:
-          type: integer
-        sort:
-          type: string
-          enum:
-          - newest
-          - ranked
-          - relevance
-          - random
-          - votes
-        votingOpen:
-          type: boolean
-        hiddenOffline:
-          type: integer
-        scope:
-          type: object
-          required:
-          - total
-          - online
-          - playersOnline
-          - bedrock
-          properties:
-            total:
-              type: integer
-            online:
-              type: integer
-            playersOnline:
-              type: integer
-            bedrock:
-              type: integer
+        data:
+          $ref: '#/components/schemas/ServerDetail'
+    ServerHistoryEnvelope:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ServerHistory'
     ServerSnapshot:
       type: object
       required:
@@ -587,84 +556,68 @@ components:
           type: integer
         versionName:
           type: string
-    ServerDetail:
-      allOf:
-      - $ref: '#/components/schemas/ServerSummary'
-      - type: object
-        required:
-        - connections
-        - links
-        - claimed
-        - votingOpen
-        - voteRewards
-        - firstSeenByUsAt
-        - lastSeenByUsAt
-        properties:
-          description:
-            type: string
-          connections:
-            type: array
-            items:
-              $ref: '#/components/schemas/ServerConnection'
-          links:
-            type: object
-            properties:
-              websiteUrl:
-                type: string
-              discordUrl:
-                type: string
-              storeUrl:
-                type: string
-              trailerUrl:
-                type: string
-          claimed:
-            type: boolean
-          votingOpen:
-            type: boolean
-          voteRewards:
-            type: boolean
-          discoveredAt:
-            type: string
-            format: date-time
-          firstSeenByUsAt:
-            type: string
-            format: date-time
-          lastSeenByUsAt:
-            type: string
-            format: date-time
-          noindex:
-            type: boolean
-    ErrorEnvelope:
+    ServerConnection:
       type: object
       required:
-      - error
+      - id
+      - edition
+      - host
+      - port
+      - role
+      - populationRelationship
       properties:
-        error:
+        id:
+          type: string
+        edition:
+          type: string
+          enum:
+          - java
+          - bedrock
+          - unknown
+        host:
+          type: string
+        port:
+          type: integer
+        role:
+          type: string
+          enum:
+          - primary
+          - alternate
+        populationRelationship:
+          type: string
+          enum:
+          - shared
+          - separate
+          - unknown
+        latest:
           type: object
           required:
-          - code
-          - message
+          - outcome
+          - observedAt
           properties:
-            code:
+            outcome:
               type: string
-              example: invalid_request
-            message:
+              enum:
+              - online
+              - offline
+              - unknown
+            observedAt:
               type: string
-              example: limit must be between 1 and 25
-    ServerListEnvelope:
-      type: object
-      required:
-      - data
-      properties:
-        data:
-          $ref: '#/components/schemas/ServerList'
-    ServerDetailEnvelope:
-      type: object
-      required:
-      - data
-      properties:
-        data:
-          $ref: '#/components/schemas/ServerDetail'
+              format: date-time
+            playersOnline:
+              type: integer
+            playersMax:
+              type: integer
+            latencyMs:
+              type: number
+            protocol:
+              type: integer
+            versionName:
+              type: string
+            motdPlain:
+              type: string
+            motdLines:
+              $ref: '#/components/schemas/MotdLines'
     MotdLines:
       type: array
       items:
@@ -687,6 +640,53 @@ components:
               type: boolean
             strike:
               type: boolean
+    ErrorEnvelope:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: invalid_request
+            message:
+              type: string
+              example: limit must be between 1 and 25
+  responses:
+    InternalError:
+      description: A safe error without internal database details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    NotFound:
+      description: No published listing matched.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    TooManyRequests:
+      description: The per-process client request limit was reached. Retry-After is 60 seconds.
+      headers:
+        Retry-After:
+          schema:
+            type: integer
+            example: 60
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InvalidRequest:
+      description: Invalid, unknown, or duplicate input.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
   parameters:
     ServerSlug:
       name: slug
