@@ -30,6 +30,8 @@ tags_raw:
 - read-only
 - json
 common:
+- type: Pricing
+  url: https://newminecraftservers.net/minecraft-api
 - type: AgenticAccess
   url: agentic-access/newminecraftservers-agentic-access.yml
 - type: Plans
