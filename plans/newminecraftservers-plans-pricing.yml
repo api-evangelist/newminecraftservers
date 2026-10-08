@@ -24,3 +24,16 @@ plans:
   - No uptime guarantee
 note: The provider publishes no paid tiers or pricing table for the API; it is a single
   free offering. price_text is the verbatim page label; there is no numeric price.
+x-canonical:
+  generated: '2026-10-08'
+  vocabulary: all/0-working/economics/plans-canonical.yml
+  models:
+  - free
+  units: []
+  plans:
+  - name: Free
+    access: other
+    model: free
+    model_how: derived
+    units: []
+    periods: []
