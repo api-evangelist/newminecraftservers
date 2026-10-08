@@ -30,6 +30,8 @@ tags_raw:
 - read-only
 - json
 common:
+- type: RateLimits
+  url: rate-limits/newminecraftservers-rate-limits.yml
 - type: Pricing
   url: https://newminecraftservers.net/minecraft-api
 - type: AgenticAccess
