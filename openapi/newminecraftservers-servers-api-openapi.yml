@@ -178,13 +178,28 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    ServerListEnvelope:
-      type: object
-      required:
-      - data
-      properties:
-        data:
-          $ref: '#/components/schemas/ServerList'
+    MotdLines:
+      type: array
+      items:
+        type: array
+        items:
+          type: object
+          required:
+          - text
+          properties:
+            text:
+              type: string
+            color:
+              type: string
+              pattern: ^#[0-9a-fA-F]{6}$
+            bold:
+              type: boolean
+            italic:
+              type: boolean
+            underline:
+              type: boolean
+            strike:
+              type: boolean
     ServerHistory:
       type: object
       required:
@@ -300,53 +315,6 @@ components:
         firstCheckAt:
           type: string
           format: date-time
-    ServerDetail:
-      allOf:
-      - $ref: '#/components/schemas/ServerSummary'
-      - type: object
-        required:
-        - connections
-        - links
-        - claimed
-        - votingOpen
-        - voteRewards
-        - firstSeenByUsAt
-        - lastSeenByUsAt
-        properties:
-          description:
-            type: string
-          connections:
-            type: array
-            items:
-              $ref: '#/components/schemas/ServerConnection'
-          links:
-            type: object
-            properties:
-              websiteUrl:
-                type: string
-              discordUrl:
-                type: string
-              storeUrl:
-                type: string
-              trailerUrl:
-                type: string
-          claimed:
-            type: boolean
-          votingOpen:
-            type: boolean
-          voteRewards:
-            type: boolean
-          discoveredAt:
-            type: string
-            format: date-time
-          firstSeenByUsAt:
-            type: string
-            format: date-time
-          lastSeenByUsAt:
-            type: string
-            format: date-time
-          noindex:
-            type: boolean
     ServerList:
       type: object
       required:
@@ -398,6 +366,186 @@ components:
               type: integer
             bedrock:
               type: integer
+    ServerHistoryEnvelope:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ServerHistory'
+    ServerConnection:
+      type: object
+      required:
+      - id
+      - edition
+      - host
+      - port
+      - role
+      - populationRelationship
+      properties:
+        id:
+          type: string
+        edition:
+          type: string
+          enum:
+          - java
+          - bedrock
+          - unknown
+        host:
+          type: string
+        port:
+          type: integer
+        role:
+          type: string
+          enum:
+          - primary
+          - alternate
+        populationRelationship:
+          type: string
+          enum:
+          - shared
+          - separate
+          - unknown
+        latest:
+          type: object
+          required:
+          - outcome
+          - observedAt
+          properties:
+            outcome:
+              type: string
+              enum:
+              - online
+              - offline
+              - unknown
+            observedAt:
+              type: string
+              format: date-time
+            playersOnline:
+              type: integer
+            playersMax:
+              type: integer
+            latencyMs:
+              type: number
+            protocol:
+              type: integer
+            versionName:
+              type: string
+            motdPlain:
+              type: string
+            motdLines:
+              $ref: '#/components/schemas/MotdLines'
+    ServerDetail:
+      allOf:
+      - $ref: '#/components/schemas/ServerSummary'
+      - type: object
+        required:
+        - connections
+        - links
+        - claimed
+        - votingOpen
+        - voteRewards
+        - firstSeenByUsAt
+        - lastSeenByUsAt
+        properties:
+          description:
+            type: string
+          connections:
+            type: array
+            items:
+              $ref: '#/components/schemas/ServerConnection'
+          links:
+            type: object
+            properties:
+              websiteUrl:
+                type: string
+              discordUrl:
+                type: string
+              storeUrl:
+                type: string
+              trailerUrl:
+                type: string
+          claimed:
+            type: boolean
+          votingOpen:
+            type: boolean
+          voteRewards:
+            type: boolean
+          discoveredAt:
+            type: string
+            format: date-time
+          firstSeenByUsAt:
+            type: string
+            format: date-time
+          lastSeenByUsAt:
+            type: string
+            format: date-time
+          noindex:
+            type: boolean
+    ServerSnapshot:
+      type: object
+      required:
+      - connectionId
+      - edition
+      - outcome
+      - observedAt
+      properties:
+        connectionId:
+          type: string
+        edition:
+          type: string
+          enum:
+          - java
+          - bedrock
+          - unknown
+        outcome:
+          type: string
+          enum:
+          - online
+          - offline
+          - unknown
+        observedAt:
+          type: string
+          format: date-time
+        playersOnline:
+          type: integer
+        playersMax:
+          type: integer
+        protocol:
+          type: integer
+        versionName:
+          type: string
+    ErrorEnvelope:
+      type: object
+      required:
+      - error
+      properties:
+        error:
+          type: object
+          required:
+          - code
+          - message
+          properties:
+            code:
+              type: string
+              example: invalid_request
+            message:
+              type: string
+              example: limit must be between 1 and 25
+    ServerDetailEnvelope:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ServerDetail'
+    ServerListEnvelope:
+      type: object
+      required:
+      - data
+      properties:
+        data:
+          $ref: '#/components/schemas/ServerList'
     ServerSummary:
       type: object
       required:
@@ -509,161 +657,17 @@ components:
               - 3
             genre:
               type: string
-    ServerDetailEnvelope:
-      type: object
-      required:
-      - data
-      properties:
-        data:
-          $ref: '#/components/schemas/ServerDetail'
-    ServerHistoryEnvelope:
-      type: object
-      required:
-      - data
-      properties:
-        data:
-          $ref: '#/components/schemas/ServerHistory'
-    ServerSnapshot:
-      type: object
-      required:
-      - connectionId
-      - edition
-      - outcome
-      - observedAt
-      properties:
-        connectionId:
-          type: string
-        edition:
-          type: string
-          enum:
-          - java
-          - bedrock
-          - unknown
-        outcome:
-          type: string
-          enum:
-          - online
-          - offline
-          - unknown
-        observedAt:
-          type: string
-          format: date-time
-        playersOnline:
-          type: integer
-        playersMax:
-          type: integer
-        protocol:
-          type: integer
-        versionName:
-          type: string
-    ServerConnection:
-      type: object
-      required:
-      - id
-      - edition
-      - host
-      - port
-      - role
-      - populationRelationship
-      properties:
-        id:
-          type: string
-        edition:
-          type: string
-          enum:
-          - java
-          - bedrock
-          - unknown
-        host:
-          type: string
-        port:
-          type: integer
-        role:
-          type: string
-          enum:
-          - primary
-          - alternate
-        populationRelationship:
-          type: string
-          enum:
-          - shared
-          - separate
-          - unknown
-        latest:
-          type: object
-          required:
-          - outcome
-          - observedAt
-          properties:
-            outcome:
-              type: string
-              enum:
-              - online
-              - offline
-              - unknown
-            observedAt:
-              type: string
-              format: date-time
-            playersOnline:
-              type: integer
-            playersMax:
-              type: integer
-            latencyMs:
-              type: number
-            protocol:
-              type: integer
-            versionName:
-              type: string
-            motdPlain:
-              type: string
-            motdLines:
-              $ref: '#/components/schemas/MotdLines'
-    MotdLines:
-      type: array
-      items:
-        type: array
-        items:
-          type: object
-          required:
-          - text
-          properties:
-            text:
-              type: string
-            color:
-              type: string
-              pattern: ^#[0-9a-fA-F]{6}$
-            bold:
-              type: boolean
-            italic:
-              type: boolean
-            underline:
-              type: boolean
-            strike:
-              type: boolean
-    ErrorEnvelope:
-      type: object
-      required:
-      - error
-      properties:
-        error:
-          type: object
-          required:
-          - code
-          - message
-          properties:
-            code:
-              type: string
-              example: invalid_request
-            message:
-              type: string
-              example: limit must be between 1 and 25
+  parameters:
+    ServerSlug:
+      name: slug
+      in: path
+      required: true
+      schema:
+        type: string
+        maxLength: 140
+        pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
+      example: example-survival
   responses:
-    InternalError:
-      description: A safe error without internal database details.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     NotFound:
       description: No published listing matched.
       content:
@@ -687,13 +691,9 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/ErrorEnvelope'
-  parameters:
-    ServerSlug:
-      name: slug
-      in: path
-      required: true
-      schema:
-        type: string
-        maxLength: 140
-        pattern: ^[a-z0-9]+(?:-[a-z0-9]+)*$
-      example: example-survival
+    InternalError:
+      description: A safe error without internal database details.
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'

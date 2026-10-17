@@ -29,20 +29,6 @@ paths:
           $ref: '#/components/responses/InternalError'
 components:
   schemas:
-    MinecraftStatusEnvelope:
-      type: object
-      required:
-      - data
-      properties:
-        data:
-          $ref: '#/components/schemas/MinecraftStatus'
-    CheckState:
-      type: string
-      enum:
-      - operational
-      - degraded
-      - outage
-      - unknown
     StatusCheck:
       type: object
       required:
@@ -93,29 +79,20 @@ components:
             - degraded
             - outage
             - unknown
-    StatusIncident:
+    CheckState:
+      type: string
+      enum:
+      - operational
+      - degraded
+      - outage
+      - unknown
+    MinecraftStatusEnvelope:
       type: object
       required:
-      - checkId
-      - label
-      - state
-      - startedAt
+      - data
       properties:
-        checkId:
-          type: string
-        label:
-          type: string
-        state:
-          type: string
-          enum:
-          - degraded
-          - outage
-        startedAt:
-          type: string
-          format: date-time
-        endedAt:
-          type: string
-          format: date-time
+        data:
+          $ref: '#/components/schemas/MinecraftStatus'
     MinecraftStatus:
       type: object
       required:
@@ -203,13 +180,30 @@ components:
             message:
               type: string
               example: limit must be between 1 and 25
+    StatusIncident:
+      type: object
+      required:
+      - checkId
+      - label
+      - state
+      - startedAt
+      properties:
+        checkId:
+          type: string
+        label:
+          type: string
+        state:
+          type: string
+          enum:
+          - degraded
+          - outage
+        startedAt:
+          type: string
+          format: date-time
+        endedAt:
+          type: string
+          format: date-time
   responses:
-    InternalError:
-      description: A safe error without internal database details.
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/ErrorEnvelope'
     TooManyRequests:
       description: The per-process client request limit was reached. Retry-After is 60 seconds.
       headers:
@@ -217,6 +211,12 @@ components:
           schema:
             type: integer
             example: 60
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorEnvelope'
+    InternalError:
+      description: A safe error without internal database details.
       content:
         application/json:
           schema:
